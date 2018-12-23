@@ -9,3 +9,6 @@ urlpatterns = [
     path("sign_out", views.sign_out, name="sign_out"),
     path("leaderboard", views.leaderboard, name="leaderboard")
 ]
+
+
+

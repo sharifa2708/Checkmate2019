@@ -71,3 +71,5 @@ def leaderboard(request):
     Leaderboard = Team.objects.filter(rank<=10) # Needs to be reviewed . It is not functioning properly
     return render(request, 'Base/leaderboard.html', {'range': range(1, 11), 'Leaderboard':Leaderboard})
     
+
+   

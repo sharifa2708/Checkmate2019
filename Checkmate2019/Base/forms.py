@@ -15,3 +15,5 @@ class LoginForm(forms.Form):
     team_name = forms.CharField(max_length=25)
     password = forms.CharField(widget=forms.PasswordInput(), max_length=20)
     
+
+
