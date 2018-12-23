@@ -1,5 +1,4 @@
 *.pyc
 __pycache__
 env
-migrations
 00*.py
