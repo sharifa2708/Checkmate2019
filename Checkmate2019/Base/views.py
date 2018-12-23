@@ -11,8 +11,8 @@ from ipware import get_client_ip
 
 def index(request):
     if not request.user.is_authenticated:
-        render(request, 'Base/index.html')
-    return render(request, 'Base/index.html')
+        return render(request, "Base/index.html", {})
+    return render(request, "Base/index.html", {})
 
 def sign_up_team(request):
     if request.method=='POST':
@@ -27,7 +27,6 @@ def sign_up_team(request):
             return redirect('/sign_up_Member')
     else :
         form = TeamForm()
-        # The form needs to be modified so that user is not prompted to enter the details like ip address, score and so on.....
         return render(request, 'Base/sign_up_team.html', {'form': form})
 
 def sign_up_Member(request):
@@ -61,7 +60,7 @@ def sign_in(request):
             return redirect('/sign_in')
     else :
         form = LoginForm()
-        return render(request, 'Base/login.html', {'form' : form} )
+        return render(request, 'Base/sign_in.html', {'form' : form} )
 
 @login_required
 def sign_out(request):
@@ -69,5 +68,6 @@ def sign_out(request):
     return HttpResponse("You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
 
 def leaderboard(request):
-    Leaderboard = Team.objects.filter(rank<=10) # Has been added without checking if it works. Needs to be reviewed .
+    Leaderboard = Team.objects.filter(rank<=10) # Needs to be reviewed . It is not functioning properly
     return render(request, 'Base/leaderboard.html', {'range': range(1, 11), 'Leaderboard':Leaderboard})
+    
