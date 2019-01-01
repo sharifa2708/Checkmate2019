@@ -6,12 +6,12 @@ from .forms import Sign_up, LoginForm
 from django.http import HttpResponse
 from django.contrib import messages
 from ipware import get_client_ip
-# from django.core.mail import send_mail can be used if we want to send mail to the players. we just need to create the emailaddress from
-# id and the documentation for this can be found at https://docs.djangoproject.com/en/2.1/topics/forms/ under the section : Field Data
+from django.contrib.auth.models import User
 
 
 def index(request):
     if not request.user.is_authenticated:
+        #The url endpoint below needs to be updated after the game is made.
         return render(request, "Base/index.html", {})
     return render(request, "Base/index.html", {})
 
@@ -22,21 +22,23 @@ def sign_up(request):
         if form.is_valid():
             team_name = form.cleaned_data.get('team_name')
             # Next 2 lines are for Checking if the team_name has already been taken. This can be improved by using AJAX request (Frontend part)
-            if Team.objects.filter(team_name=team_name).exists():
+            if User.objects.filter(username=team_name).exists():
                 return HttpResponse("Sorry the Team Name has already been taken. Please try with some other team name")
             password = form.cleaned_data.get('password')
+            user = User.objects.create_user(
+                username=team_name, password=password)
+            user.save()
             id1 = form.cleaned_data.get('id1')
             id2 = form.cleaned_data.get('id2')
             ip = get_client_ip(request)
-            team = Team(team_name=team_name, password=password,
+            team = Team(user=user,
                         ip_address=ip, score=0, puzzles_solved=0, rank=0)
             team.save()
             member1 = Member(id=id1, team=team)
             member1.save()
-            if id2 :
+            if id2:
                 member2 = Member(id=id2, team=team)
                 member2.save()
-            # Something wrong here as message is not being flashed on user side, but on admin site
             messages.success(request, 'Team Successfully created!!')
             return redirect('/sign_in')
     else:
@@ -51,15 +53,15 @@ def sign_in(request):
             team_name = form.cleaned_data.get('team_name')
             password = form.cleaned_data.get('password')
             user = authenticate(
-                request, team_name=team_name, password=password)
+                username=team_name, password=password)
             if user:
-                # Something wrong here as message is not being flashed
+                login(request, user)
                 messages.success(request, 'Successfully logged in .')
-                # Base:game needs tom be updated after the game is completed.
-                return redirect('Base:game')
+                # Base/index written below needs to be updated after the game is completed.
+                return render(request, 'Base/index.html')
             else:
                 messages.error(
-                    request, 'Login failed. Enter Correct Details .')  # Something wrong here as message is not being flashed
+                    request, 'Login failed. Enter Correct Details .')
                 return redirect('/sign_in')
         else:
             return HttpResponse("There was some error, please try again.")
@@ -76,6 +78,7 @@ def sign_out(request):
 
 @login_required
 def leaderboard(request):
-    # Needs to be reviewed . It is not functioning properly
-    Leaderboard = Team.objects.filter(rank <= 10)
-    return render(request, 'Base/leaderboard.html', {'range': range(1, 11), 'Leaderboard': Leaderboard})
+    leaderboard = Team.objects.order_by('rank')[:9]
+    Leaderboard = enumerate([[team.user.username, team.score]
+                             for team in leaderboard], 1)
+    return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard})
