@@ -15,7 +15,7 @@ def index(request):
         return render(request, "Base/index.html", {})
     return render(request, "Base/index.html", {})
 
-
+    
 def sign_up(request):
     if request.method == 'POST':
         form = Sign_up(request.POST)
@@ -41,9 +41,13 @@ def sign_up(request):
                 member2.save()
             messages.success(request, 'Team Successfully created!!')
             return redirect('/sign_in')
+        else:
+            form = Sign_up()
+            messages.error(request, 'Please enter valid BITS IDs')
+            return render(request, 'Base/sign_up.html', {'form': form})
     else:
-        form = Sign_up()
-        return render(request, 'Base/sign_up.html', {'form': form})
+            form = Sign_up()
+            return render(request, 'Base/sign_up.html', {'form': form})    
 
 
 def sign_in(request):
