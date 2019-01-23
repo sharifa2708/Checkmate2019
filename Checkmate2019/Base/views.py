@@ -78,6 +78,7 @@ def sign_in(request):
 
 @login_required
 def sign_out(request):
+    # we need to add a function here that will invoke the function : position and will store the coordinates
     logout(request)
     return HttpResponse("You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
 
@@ -102,3 +103,30 @@ def check_existence(request, bitsid):
             current_team.delete()
     else:
         pass
+
+@login_required
+def score(request):
+    if request.method=="POST":
+        score = request.POST['score']
+        user = Team.objects.get(user=request.user)
+        user.score += int(score)
+        user.save()
+        return redirect("/score") # needs to be updated after frontend is done
+    else:
+        #remove this part later....Currently its here only for a visual interface
+        return render(request, 'Base/score.html', {})
+
+#in case the user logs out of the system or the system crashes this functions comes into picture
+@login_required
+def position(request):
+    if request.method=="POST":
+        # Needs to be updated after frontend is done. input is to be taken not as a form, but every time the system crashes ot user logs out
+        x_coordinates = request.POST['x_coordinates']
+        y_coordinates = request.POST['y_coordinates']
+        user = Team.objects.get(user=request.user)
+        user.x_coordinates = float(x_coordinates)
+        user.y_coordinates = float(y_coordinates)
+        user.save()
+        return redirect("/position")
+    else :
+        return render(request, 'Base/position.html', {})
