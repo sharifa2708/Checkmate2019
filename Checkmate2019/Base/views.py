@@ -48,26 +48,22 @@ def sign_up(request):
 
 def sign_in(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            team_name = form.cleaned_data.get('team_name')
-            password = form.cleaned_data.get('password')
-            user = authenticate(
-                username=team_name, password=password)
-            if user:
-                login(request, user)
-                messages.success(request, 'Successfully logged in .')
-                # Base/index written below needs to be updated after the game is completed.
-                return render(request, 'Base/index.html')
-            else:
-                messages.error(
-                    request, 'Login failed. Enter Correct Details .')
-                return redirect('/sign_in')
+        team_name = request.POST.get('teamname')
+        password = request.POST.get('password')
+        user = authenticate(
+            username=team_name, password=password)
+        if user:
+            login(request, user)
+            messages.success(request, 'Successfully logged in .')
+            # Base/index written below needs to be updated after the game is completed.
+            return render(request, 'Base/index.html')
         else:
-            return HttpResponse("There was some error, please try again.")
+            messages.error(
+                request, 'Login failed. Enter Correct Details .')
+            return redirect('/sign_in')
+
     else:
-        form = LoginForm()
-        return render(request, 'Base/sign_in.html', {'form': form})
+        return render(request, 'Base/sign_in.html')
 
 
 @login_required
