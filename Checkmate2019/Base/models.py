@@ -25,7 +25,7 @@ class Member(models.Model):
         Team, on_delete=models.CASCADE, blank=False, related_name="Member")
 
     def __str__(self):
-        return f"{self.id}"
+        return self.id
 
 class Question(models.Model):
     id = models.CharField(max_length=1000, primary_key=True)
@@ -33,4 +33,4 @@ class Question(models.Model):
     answer = models.TextField(default="Test Answer")
 
     def __str__(self):
-        return f"{self.question_text}"
+        return self.question_text
