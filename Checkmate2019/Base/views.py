@@ -56,7 +56,7 @@ def sign_in(request):
             login(request, user)
             messages.success(request, 'Successfully logged in .')
             # Base/index written below needs to be updated after the game is completed.
-            return render(request, 'Base/index.html')
+            return redirect('/game')
         else:
             messages.error(
                 request, 'Login failed. Enter Correct Details .')
@@ -64,6 +64,10 @@ def sign_in(request):
 
     else:
         return render(request, 'Base/sign_in.html')
+
+@login_required(login_url='/sign_in/')
+def game(request):
+    return render(request, "Base/main.html")
 
 
 @login_required
