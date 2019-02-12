@@ -1,0 +1,54 @@
+
+body {
+    margin: 0%;
+    background-color: lightblue;
+    box-sizing: border-box;
+}
+#road {
+    background-color: brown;
+    width: 100%;
+    height: 20vh;
+    margin: 0px;
+    padding: 0PX;
+    position: fixed;
+    bottom: 0%;
+}
+
+#mario {
+    background-color: green;
+    height: 12vh;
+    width: 5%;
+    z-index: 500;
+    position: fixed;
+    bottom: 20vh;
+    left: 25%;
+    transition: bottom .3s;
+}
+
+.support,.onscreen{
+    background-color: brown;
+    height: 5vh;
+    width: 15%;
+}
+#block1{
+    position: fixed;
+    left: 30%;
+    bottom: 35vh;
+}
+#block2 {
+    position: fixed;
+    left: 35%;
+    bottom: 40vh; 
+}
+#block3 {
+    position: fixed;
+    left: 50%;
+    bottom: 22vh;
+}
+#top-line {
+    position: fixed;
+    bottom: 85vh;
+    width: 8000%;
+    background-color: lightblue;        
+    /* keep bg same as body or make this the top wall in mario*/
+}

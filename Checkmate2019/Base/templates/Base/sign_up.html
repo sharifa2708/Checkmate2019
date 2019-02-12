@@ -1,22 +1,60 @@
-{% extends "Base/base.html" %}
-{# Load the tag library #}
-{% load bootstrap3 %}
+<!DOCTYPE html>
+<html>
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% block title %}
-Register Team
+{%load static%}
 
-{% endblock %}
+<head>
+	<title>Register Page</title>
+	<link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">  
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"> 
+    <link rel="stylesheet" href="{% static 'css/com.css' %}">
+</head>
+<body background="{% static 'images/bg.jpg' %}">
+	<div class = "wrapper">
+				<img src = "{% static 'images/flag2.jpg' %}" class = "item flag">
+		<div class = "item">
+            <form method = "POST" action = "/sign_up/">
+                {%csrf_token%}
+				<br>
+				<br>
+				Team Name 
+				<br>
+				<br>
+				<img src="{% static 'images/icon.png' %}" class = "icon">
+				 <input type = "text" name = "teamname" required>
+				<br>
+				<br>
+				
+                ID - 1
+                <br>
+                <br>
+                <img src="{% static 'images/icon.png' %}" class = "icon">
+				<input type = "text" name = "id1" required>
+				<br>
+				<br>
+                ID - 2
+                <br>
+                <br>
+                <img src="{% static 'images/icon.png' %}" class = "icon">
+				<input type = "text" name = "id2" required>
+				<br>
+				<br>
+				Password
+				<br>
+				<br>
+				<img src="{% static 'images/icon.png' %}"class = "icon">
+				<input type = "Password" name = "password" required>
+				<br>
+                <br>
+                
+				<button type="submit" name="Register">
+ 			 		Register
+				</button>
+			</form>
+		</div>
+		<img src="{% static 'images/castle1.jpg' %}" class="item castle">
+	</div>
+	<a href="login.html">Login</a>
 
-
-{% block body %}
-<form action="/sign_up/" method="post" style="padding:10px">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <input type="submit" value="Submit">
-</form>
-<br>
-<h5>Note : If your team has only 1 member, then leave the column for id2 blank.</h5>
-{% endblock %}
+</body>
+</html>

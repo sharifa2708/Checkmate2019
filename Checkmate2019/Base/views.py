@@ -18,38 +18,32 @@ def index(request):
     
 def sign_up(request):
     if request.method == 'POST':
-        form = Sign_up(request.POST)
-        if form.is_valid():
-            team_name = form.cleaned_data.get('team_name')
-            # Next 2 lines are for Checking if the team_name has already been taken. This can be improved by using AJAX request (Frontend part)
-            if User.objects.filter(username=team_name).exists():
-                return HttpResponse("Sorry the Team Name has already been taken. Please try with some other team name")
-            password = form.cleaned_data.get('password')
-            user = User.objects.create_user(
-                username=team_name, password=password)
-            user.save()
-            id1 = form.cleaned_data.get('id1')
-            id2 = form.cleaned_data.get('id2')
-            ip = get_client_ip(request)
-            team = Team(user=user,
-                        ip_address=ip, score=0, puzzles_solved=0, rank=0)
-            team.save()
-            member1 = Member(id=id1, team=team)
-            check_existence(request, id1) #If this bits id is registered with a team that has only one person, that team will be deleted. Otherwise nothing happens.
-            member1.save()
-            if id2:
-                member2 = Member(id=id2, team=team)
-                check_existence(request, id2)
-                member2.save()
-            messages.success(request, 'Team Successfully created!!')
-            return redirect('/sign_in')
-        else:
-            form = Sign_up()
-            messages.error(request, 'Please enter valid BITS IDs')
-            return render(request, 'Base/sign_up.html', {'form': form})
+        team_name = request.POST.get('teamname')
+        # Next 2 lines are for Checking if the team_name has already been taken. This can be improved by using AJAX request (Frontend part)
+        if User.objects.filter(username=team_name).exists():
+            return HttpResponse("Sorry the Team Name has already been taken. Please try with some other team name")
+        password = request.POST.get('password')
+        user = User.objects.create_user(
+            username=team_name, password=password)
+        user.save()
+        id1 = request.POST.get('id1')
+        id2 = request.POST.get('id2')
+        ip = get_client_ip(request)
+        team = Team(user=user,
+                    ip_address=ip, score=0, puzzles_solved=0, rank=0)
+        team.save()
+        member1 = Member(id=id1, team=team)
+        check_existence(request, id1) #If this bits id is registered with a team that has only one person, that team will be deleted. Otherwise nothing happens.
+        member1.save()
+        if id2:
+            member2 = Member(id=id2, team=team)
+            check_existence(request, id2)
+            member2.save()
+        messages.success(request, 'Team Successfully created!!')
+        return redirect('/sign_in')
     else:
-            form = Sign_up()
-            return render(request, 'Base/sign_up.html', {'form': form})    
+        form = Sign_up()
+        return render(request, 'Base/sign_up.html')   
 
 
 def sign_in(request):
