@@ -89,9 +89,17 @@ def game(request):
 @login_required
 def sign_out(request):
     # we need to add a function here that will invoke the function : position and will store the coordinates
-    logout(request)
-    return HttpResponse("You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
-
+    if request.method=='POST':
+        password = request.POST.get('password')
+        if password=="#" : # Todo : replace # by a custom administrator password of choice 
+            logout(request)
+            messages.success(request, "You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
+            return redirect('/game')
+        else :
+            messages.error(request, 'Wrong password. contact invigilator.') 
+            return redirect('/sign_out/')  
+    else:
+        return render(request, "Base/sign_out.html")
 
 @login_required
 def leaderboard(request):
