@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 from ipware import get_client_ip
 from django.contrib.auth.models import User
+import re
+from django.core import validators
 
 
 def index(request):
@@ -21,13 +23,27 @@ def sign_up(request):
         team_name = request.POST.get('teamname')
         # Next 2 lines are for Checking if the team_name has already been taken. This can be improved by using AJAX request (Frontend part)
         if User.objects.filter(username=team_name).exists():
-            return HttpResponse("Sorry the Team Name has already been taken. Please try with some other team name")
+            messages.error(request, "Sorry the Team Name has already been taken. Please try with some other team name")
+            return render(request, 'Base/sign_up.html')
         password = request.POST.get('password')
         user = User.objects.create_user(
             username=team_name, password=password)
         user.save()
         id1 = request.POST.get('id1')
         id2 = request.POST.get('id2')
+        val = validators.RegexValidator(re.compile('^201[5-8]{1}[0-9A-Z]{4}[0-9]{4}P$'),
+                                        message='Enter your valid BITS ID, for eg. 2018A7PS0210P')
+        error = 0
+        try:
+            error1 = val(id1)
+            if id2 :
+                error2 = val(id2)
+        except Exception :
+            error = 1
+        if error:
+            messages.error(
+                request, 'Enter your valid BITS ID')
+            return render(request, 'Base/sign_up.html')
         ip = get_client_ip(request)
         team = Team(user=user,
                     ip_address=ip, score=0, puzzles_solved=0, rank=0)
@@ -73,9 +89,17 @@ def game(request):
 @login_required
 def sign_out(request):
     # we need to add a function here that will invoke the function : position and will store the coordinates
-    logout(request)
-    return HttpResponse("You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
-
+    if request.method=='POST':
+        password = request.POST.get('password')
+        if password=="#" : # Todo : replace # by a custom administrator password of choice 
+            logout(request)
+            messages.success(request, "You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
+            return redirect('/game')
+        else :
+            messages.error(request, 'Wrong password. contact invigilator.') 
+            return redirect('/sign_out/')  
+    else:
+        return render(request, "Base/sign_out.html")
 
 @login_required
 def leaderboard(request):
