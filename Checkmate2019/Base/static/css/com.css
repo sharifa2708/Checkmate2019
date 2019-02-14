@@ -1,8 +1,12 @@
 html{
 	font-family: 'Orbitron', sans-serif;
 	font-family: 'Press Start 2P', cursive;
-	font-size: 5vh;
+	font-size: 4vh;
 	background: url("./pics/bg.jpg");
+}
+
+html,body{
+	margin: 0;
 }
 
 .wrapper{
@@ -19,17 +23,17 @@ html{
 	box-sizing: border-box;
 	color: white;
 	text-align: center;
-	padding-top: 5vw;
 	min-height: 10vh;
 	flex: 0 1 50%;
 	border-bottom: 2px solid #eeeeee;
+	height: 95vh;
 }
 
 
 
 .flag{
 	max-width: 20vw;
-	max-height: 90vh;
+	max-height: 95vh;
 
 }
 
@@ -52,7 +56,7 @@ input{
 	width: 30vw;
 	background: transparent;
 	font-family: 'Special Elite', cursive;
-	font-size: 1.2em;
+	font-size: 1em;
 	border-bottom: 2px solid white;
 }
 
@@ -65,7 +69,6 @@ button{
 	padding: 10px;
 	font-size: 1em;
 	font-family: 'Special Elite', cursive;
-	margin-top: 5vh;
 	border-radius: 5px;
 	cursor: pointer;
 	background: white;
@@ -95,5 +98,19 @@ a:hover{
 	margin-bottom:0px;
 	z-index: 2;
 	color:white;
+	font-size: 2vh;
+	background: transparent;
 	
+}
+
+.close{
+	z-index: 2;
+	background: transparent;
+	color:white;
+	border:none;
+	font-size: 3vh;
+}
+
+.close:hover{
+	background:transparent;
 }

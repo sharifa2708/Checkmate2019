@@ -46,7 +46,6 @@ function getValueGroup(element, property) {
     }
     if (property == 'y') {
         return (480 - getValue(document.getElementById(`Group${group_num}`), 'y', 'vh') - parseFloat(element.getAttribute('y'))) * 100 / 480;
-    console.log(123);
     }
 }
 
@@ -171,6 +170,7 @@ function setSvgAttribute(element, attributeName, attributeValue) {
     element.setAttribute(attributeName, attributeValue);
 }
 
+// NOTE: GIVE CO-ORDS FOR TOP AND LEFT
 function transformSvgElement(element, x, y) {
     x = x*3360/100;
     y = 480 - (y*480/100);
@@ -228,7 +228,7 @@ function onb() { //checks if on block and moves char down if reqd
     }
 }
 var falling;
-var ques = document.getElementById('Ques');
+var ques = document.getElementById('ques');
 var cross = document.getElementById('Notnot');
 var background = document.getElementById('bgrd');
 var i;
@@ -259,6 +259,7 @@ function moveUp(e) {
             }
             if (flag == 0) {
                 transformSvgElement(mario.element,mario.left,mario.bottom + jump_height);
+                $('#mario').toggleClass('marioJumpAnim');
             };
             setTimeout(function() {
                 window.addEventListener("keydown", moveUp);
@@ -411,12 +412,6 @@ window.addEventListener("keydown", moveUp);
 // window.addEventListener("keydown", moveDown);
 window.addEventListener("keydown", handleKeyDown);
 window.addEventListener("keyup", handleKeyUp);
-
-var ques = document.getElementById('Ques');
-var cross = document.getElementById('Notnot');
-var background = document.getElementById('bgrd');
-var i;
-
 
 
 /*document.addEventListener('keydown', function abc(event) {

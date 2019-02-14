@@ -3,52 +3,96 @@ body {
     margin: 0%;
     background-color: lightblue;
     box-sizing: border-box;
+    overflow: hidden;
 }
-#road {
-    background-color: brown;
-    width: 100%;
-    height: 20vh;
+
+.fixed-top{
+    position: fixed;
+    height: 10%;
+}
+.team-head{
+    position: fixed;
+    left:40%;
+    top:0.5%;
+}
+.team-display{
+    position: relative;
+}
+.score-head{
+    position: fixed;
+    right:1.2%;
+    top:0.5%;
+}
+.score-display{
+    position: relative;
+}
+.time-head{
+    position: fixed;
+    top:1%;
+}
+.time-display{
+    position: relative;
+}
+#mainNav.fixed-top {
+  width: 100%;
+}
+.navbar-brand,.guide {
+  font-family: 'Press Start 2P','Kaushan Script', Arial, sans-serif, cursive;
+}
+
+
+.links{
+    position: fixed;
+    top:11%;
+}
+a:link{
+    color:#000000 !important;
+}
+a:hover{
+    color: #CE6D18 !important;
+}
+
+
+#game{
     margin: 0px;
-    padding: 0PX;
-    position: fixed;
-    bottom: 0%;
+    position: absolute;
+    left: 0px;
+    top: 0vh;
 }
-
-#mario {
-    background-color: green;
-    height: 12vh;
-    width: 5%;
-    z-index: 500;
-    position: fixed;
-    bottom: 20vh;
-    left: 25%;
-    transition: bottom .3s;
+#game svg{
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 100vh;
 }
-
-.support,.onscreen{
-    background-color: brown;
-    height: 5vh;
-    width: 15%;
-}
-#block1{
+.fixed-top{
     position: fixed;
-    left: 30%;
-    bottom: 35vh;
+    height: 10%;
 }
-#block2 {
+.team-head{
     position: fixed;
-    left: 35%;
-    bottom: 40vh; 
+    left:40%;
+    top:0.5%;
 }
-#block3 {
+.team-display{
     position: fixed;
-    left: 50%;
-    bottom: 22vh;
+    top:5%;
+    left: 40%;
 }
-#top-line {
+.score-head{
     position: fixed;
-    bottom: 85vh;
-    width: 8000%;
-    background-color: lightblue;        
-    /* keep bg same as body or make this the top wall in mario*/
+    right:1.2%;
+    top:0.5%;
+}
+.score-display{
+    position: fixed;
+    top:5%;
+    right: 1%;
+}
+#mainNav.fixed-top {
+  width: 100%;
+}
+.navbar-brand {
+  color: #44422A;
+  font-family: 'Press Start 2P','Kaushan Script', Arial, sans-serif, cursive;
 }
