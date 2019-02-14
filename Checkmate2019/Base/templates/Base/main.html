@@ -36,22 +36,24 @@
             </div>
         </div>
         <div class="team-head navbar-brand">
-            TEAM NAME:
+            TEAM NAME: <br><br> {{teamname}}
         
-            <div class="team-display">
+            <!--<div class="team-display">
                 <svg width="240" height="110">
                     <rect width="210" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+                    
                 </svg>
-            </div>
+                
+            </div>-->
         </div>
         <div class="navbar-brand score-head">
-            SCORE:
+            SCORE: <br> {{score}}
     
-        <div class="score-display">
+        <!--<div class="score-display">
             <svg width="150" height="110">
                 <rect width="140" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
             </svg>
-        </div>
+        </div>-->
     </div>
 
     </div>
@@ -733,19 +735,23 @@
 <div class="Shadow">
 <div class="questionText">
     
-    <p> 
+    <p id="p1">  
         {% csrf_token %}
         {{question}}
     </p>
 </div>
 <div class="answerBox">
     <label>Answer<br>
-    <input type="text" name="Answer" placeholder="Enter the Answer" id="textArea">
+<form method = 'POST', action = '/check_answer/'>
+    {%csrf_token%}
+    <input type="text" name="answer" placeholder="Enter the Answer" id="textArea">
+    
     </label>
 </div>
 <div class="submit">
-    <button class="submitButton">Submit</button>    
+    <button type = 'submit' class="submitButton">Submit</button>  
 </div>
+</form>
 <div class="close">
     Can't Solve Eh?
 <img src="{% static 'vector/window-close-regular.svg' %}" alt="Close button" id="Notnot">

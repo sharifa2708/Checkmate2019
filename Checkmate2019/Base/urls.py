@@ -9,5 +9,6 @@ urlpatterns = [
     path("leaderboard/", views.leaderboard, name="leaderboard"),
     path("score/", views.score, name="Score"),
     path("position/", views.position, name="position"),
-    path("game/", views.game, name="game")
+    path("game/", views.game, name="game"),
+    path("check_answer/", views.check_answer, name="check_answer"),
 ]
