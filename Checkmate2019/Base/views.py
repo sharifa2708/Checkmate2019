@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Team, Member
+from .models import Team, Member, Question
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout, authenticate
 from .forms import Sign_up, LoginForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from ipware import get_client_ip
 from django.contrib.auth.models import User
@@ -91,8 +92,18 @@ def sign_in(request):
         return redirect('/game')
 
 @login_required(login_url='/sign_in/')
+@csrf_exempt
 def game(request):
-    return render(request, "Base/main.html")
+    if request.method == "POST":
+        key = request.POST.get('questionKey')
+        question = Question.objects.get(id = key)
+        question_text = question.question_text
+        data = {
+            'question_text':question_text
+        }
+        return JsonResponse(data)
+    else:
+        return render(request, 'Base/main.html')
 
 
 @login_required
