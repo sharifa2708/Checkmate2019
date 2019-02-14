@@ -250,7 +250,11 @@ function moveUp(e) {
                             flag = 1;
                             transformSvgElement(mario.element,mario.left,rest_top[ii].bottom);
                             if (rest_top[ii].element.id == 'CoinBlock'){
+                                // questionpopup();
+                                var key = rest_top[ii].element.getAttribute('key');
+                                get_question();
                                 questionpopup();
+
                             }
                             break jump_start;
                         }
@@ -450,3 +454,42 @@ function questionpopup() {
     ques.className = 'hideBox ';
     bgrd.className = 'hideBox '; 
     });
+
+     function getQuestion(key)({
+         var xhttp = new XMLHttpRequest();
+         xhttp.onreadystatechange = function (){
+             if (this.readyState == 4 && this.status == 200){
+
+                 console.log(this.responseText);
+             }
+     }
+     xhttp.open("Post", "/game", "true");
+     xhttp.send();
+}
+
+
+// function post(path, params, method) {
+//     method = method || "post"; // Set method to post by default if not specified.
+
+//     // The rest of this code assumes you are not using a library.
+//     // It can be made less wordy if you use one.
+//     var form = document.createElement("form");
+//     form.setAttribute("method", method);
+//     form.setAttribute("action", path);
+
+//     for(var key in params) {
+//         if(params.hasOwnProperty(key)) {
+//             var hiddenField = document.createElement("input");
+//             hiddenField.setAttribute("type", "hidden");
+//             hiddenField.setAttribute("name", key);
+//             hiddenField.setAttribute("value", params[key]);
+//             //hiddenField.setAttribute();
+
+//             form.appendChild(hiddenField);
+            
+//         }
+//     }
+
+//     document.body.appendChild(form);
+//     form.submit();
+// }
