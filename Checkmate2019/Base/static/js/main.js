@@ -252,7 +252,7 @@ function moveUp(e) {
                             if (rest_top[ii].element.id == 'CoinBlock'){
                                 // questionpopup();
                                 var key = rest_top[ii].element.getAttribute('key');
-                                get_question();
+                                getQuestion(key);
                                 questionpopup();
 
                             }
@@ -455,16 +455,17 @@ function questionpopup() {
     bgrd.className = 'hideBox '; 
     });
 
-     function getQuestion(key)({
-         var xhttp = new XMLHttpRequest();
-         xhttp.onreadystatechange = function (){
-             if (this.readyState == 4 && this.status == 200){
-
-                 console.log(this.responseText);
-             }
-     }
-     xhttp.open("Post", "/game", "true");
-     xhttp.send();
+function getQuestion(key){
+    $.ajax( {
+        type: 'POST',
+        url: '/game',
+        data: {
+            'questionKey': key
+        },
+        success: function(data) {
+            console.log(data);
+        }
+    });
 }
 
 
