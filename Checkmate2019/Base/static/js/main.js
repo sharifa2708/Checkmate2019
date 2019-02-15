@@ -252,7 +252,12 @@ function moveUp(e) {
                             if (rest_top[ii].element.id == 'CoinBlock'){
                                 // questionpopup();
                                 var key = rest_top[ii].element.getAttribute('key');
-                                getQuestion(key);
+                                console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
+                                
                                 questionpopup();
 
                             }
@@ -456,16 +461,23 @@ function questionpopup() {
     });
 
 function getQuestion(key){
-    $.ajax( {
+    var data = $.ajax( {
         type: 'POST',
-        url: '/game',
+        url: '/game/',
         data: {
             'questionKey': key
         },
         success: function(data) {
             console.log(data);
+            var obj = JSON.parse;
+            var x = data.question_text;
+            console.log(x);   
+            document.getElementById('p1').innerHTML = x;
+                     
         }
+        
     });
+    return data;
 }
 
 

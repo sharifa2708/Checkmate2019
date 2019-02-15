@@ -31,6 +31,8 @@ class Question(models.Model):
     id = models.CharField(max_length=1000, primary_key=True)
     question_text = models.TextField(default="Test Question")
     answer = models.TextField(default="Test Answer")
+    score_increment = models.IntegerField(default=10)
+    answered_by = models.ManyToManyField(Team, related_name='questions_answered', blank=True)
 
     def __str__(self):
         return self.question_text

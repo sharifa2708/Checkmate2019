@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 import re
 from django.core import validators
 
+current_question_key = 0
 
 def index(request):
     if not request.user.is_authenticated:
@@ -96,6 +97,8 @@ def sign_in(request):
 def game(request):
     if request.method == "POST":
         key = request.POST.get('questionKey')
+        global current_question_key
+        current_question_key = key
         question = Question.objects.get(id = key)
         question_text = question.question_text
         data = {
@@ -103,7 +106,33 @@ def game(request):
         }
         return JsonResponse(data)
     else:
-        return render(request, 'Base/main.html')
+        current_user = request.user
+        current_team = Team.objects.get(user = current_user)
+        score = current_team.score
+        name = current_user.username
+        return render(request, 'Base/main.html', {'teamname':name, 'score':score})
+
+
+def check_answer(request):
+    current_user = request.user
+    current_team = Team.objects.get(user = current_user)
+    current_score = current_team.score
+
+    if request.method == "POST":
+        answer = request.POST.get('answer')
+        question = Question.objects.get(id = current_question_key)
+        if answer == question.answer:
+            if question in current_team.questions_answered.all(): #This is required to prevent the score from increasing if the somebody submits a correct answer to the same question more than once
+                pass
+            else:
+                current_team.score = current_score + question.score_increment
+                current_team.questions_answered.add(question)
+                current_team.save()
+        else:
+            pass
+        return HttpResponse(status=204) #This means that the server has successfully processed the request and is not going to return any data.
+    else:
+        return HttpResponse("You weren't supposed to be here you know")
 
 
 @login_required

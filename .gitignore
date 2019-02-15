@@ -6,4 +6,3 @@ env
 # pycharm settings
 *.xml
 *.iml
-db.sqlite3
