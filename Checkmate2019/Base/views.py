@@ -1,15 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Team, Member
+from .models import Team, Member, Question
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import login, logout, authenticate
 from .forms import Sign_up, LoginForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from ipware import get_client_ip
 from django.contrib.auth.models import User
 import re
 from django.core import validators
 
+current_question_key = 0
 
 def index(request):
     if not request.user.is_authenticated:
@@ -29,7 +31,6 @@ def sign_up(request):
             password = request.POST.get('password')
             user = User.objects.create_user(
                 username=team_name, password=password)
-            user.save()
             id1 = request.POST.get('id1')
             id2 = request.POST.get('id2')
             val = validators.RegexValidator(re.compile('^201[5-8]{1}[0-9A-Z]{4}[0-9]{4}P$'),
@@ -46,6 +47,7 @@ def sign_up(request):
                     request, 'Enter your valid BITS ID')
                 return render(request, 'Base/sign_up.html')
             ip = get_client_ip(request)
+            user.save()
             team = Team(user=user,
                         ip_address=ip, score=0, puzzles_solved=0, rank=0)
             team.save()
@@ -91,9 +93,61 @@ def sign_in(request):
         return redirect('/game')
 
 @login_required(login_url='/sign_in/')
+@csrf_exempt
 def game(request):
-    return render(request, "Base/main.html")
+    if request.method == "POST":
+        key = request.POST.get('questionKey')
+        global current_question_key
+        current_question_key = key
+        question = Question.objects.get(id = key)
+        question_text = question.question_text
+        data = {
+            'question_text':question_text
+        }
+        return JsonResponse(data)
+    else:
+        current_user = request.user
+        current_team = Team.objects.get(user = current_user)
+        score = current_team.score
+        name = current_user.username
+        return render(request, 'Base/main.html', {'teamname':name, 'score':score})
 
+
+def check_answer(request):
+    current_user = request.user
+    current_team = Team.objects.get(user = current_user)
+    current_score = current_team.score
+
+    if request.method == "POST":
+        answer = request.POST.get('answer')
+        question = Question.objects.get(id = current_question_key)
+        if answer == question.answer:
+            if question in current_team.questions_answered.all(): #This is required to prevent the score from increasing if the somebody submits a correct answer to the same question more than once
+                pass
+            else:
+                current_team.score = current_score + question.score_increment
+                current_team.questions_answered.add(question)
+                current_team.save()        
+        else:
+            pass
+        return HttpResponse(status=204) #This means that the server has successfully processed the request and is not going to return any data.
+    else:
+        return HttpResponse("You weren't supposed to be here you know")
+
+def display_score(request):
+    current_user = request.user
+    current_team = Team.objects.get(user = current_user)
+    score = current_team.score
+    if request.method == "POST":
+        data = {
+            'score':score
+        }
+        return JsonResponse(data)
+    else:
+        data = {
+            'score':score
+        }
+        return JsonResponse(data)
 
 @login_required
 def sign_out(request):
