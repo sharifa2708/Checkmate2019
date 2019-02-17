@@ -5,7 +5,7 @@ function getValue(element, property, units) { // property can only be x or y or 
         return parseFloat(element.getAttribute('transform').split('translate(').join(',').split(')').join(',').split(',')[1]); // 3360 is viewport width of svg
     }
     if (property == 'y') {
-        return parseFloat(element.getAttribute('transform').split('translate(').join(',').split(')').join(',').split(',')[2]); // 480 is viewport height of svg       
+        return parseFloat(element.getAttribute('transform').split('translate(').join(',').split(')').join(',').split(',')[2]); // 480 is viewport height if svg       
     }
 }
 
@@ -25,10 +25,10 @@ function getValueBlock(element, property) {
             return parseFloat(element.getAttribute('width')) * 100 / 3360;
         }
         if (property == 'x') {
-            return (getValue(document.getElementById('Blocks'), 'x', '%') + getValue(document.getElementById(`BlockGroup${block_group_num}`), 'x', '%') + parseFloat(element.getAttribute('x'))) * 100 / 3360;
+            return (getValue(document.getElementById('Blocks'), 'x', '%') + getValue(document.getElementById('BlockGroup' + block_group_num), 'x', '%') + parseFloat(element.getAttribute('x'))) * 100 / 3360;
         }
         if (property == 'y') {
-            return (480 - getValue(document.getElementById('Blocks'), 'y', 'vh') - getValue(document.getElementById(`BlockGroup${block_group_num}`), 'y', 'vh') - (parseFloat(element.getAttribute('y')))) * 100 / 480;
+            return (480 - getValue(document.getElementById('Blocks'), 'y', 'vh') - getValue(document.getElementById('BlockGroup' + block_group_num), 'y', 'vh') - (parseFloat(element.getAttribute('y')))) * 100 / 480;
         }
     }
 }
@@ -80,28 +80,28 @@ function getValueGround(element,property){
 var rest_left = [];
 var rest_top = [];
 
-// var ground_svg = document.getElementsByClassName("groundb");
-// for(var ii = 0; ii < ground_svg.length; ++ii){
-//     var temp = {
-//         "element": ground_svg[ii],
-//         "width": getValueGround(ground_svg[ii], 'width'),
-//         "height": getValueGround(ground_svg[ii], 'height'),
-//         "left": getValueGround(ground_svg[ii], 'x'),
-//         "top": getValueGround(ground_svg[ii], 'y'),
-//     };
-//     temp.right = temp.left + temp.width;
-//     temp.bottom = temp.top - temp.height;
-//     rest_left.push(temp);
-// }
+var ground_svg = document.getElementsByClassName("groundb");
+for(var ii = 0; ii < ground_svg.length; ++ii){
+    var temp = {
+        "element": ground_svg[ii],
+        "width": getValueGround(ground_svg[ii], 'width'),
+        "height": getValueGround(ground_svg[ii], 'height'),
+        "left": getValueGround(ground_svg[ii], 'x'),
+        "top": getValueGround(ground_svg[ii], 'y'),
+    };
+    temp.right = temp.left + temp.width;
+    temp.bottom = temp.top - temp.height;
+    rest_left.push(temp);
+}
 
 var blocks_svg = document.getElementsByClassName("blocks");
 for (var ii = 0; ii < blocks_svg.length; ++ii) {
     var temp = {
         "element": blocks_svg[ii],
+        "width": getValueBlock(blocks_svg[ii], 'width'),
+        "height": getValueBlock(blocks_svg[ii], 'height'),
         "left": getValueBlock(blocks_svg[ii], 'x'),
         "top": getValueBlock(blocks_svg[ii], 'y'),
-        "height": getValueBlock(blocks_svg[ii], 'height'),
-        "width": getValueBlock(blocks_svg[ii], 'width'),
     };
     temp.right = temp.left + temp.width;
     temp.bottom = temp.top - temp.height;
@@ -154,13 +154,13 @@ mario.left = getValue(mario.element, 'x','%')*100/3360;
 mario.top = (480 - getValue(mario.element, 'y',"vh"))*100/480;
 mario.right = mario.left + mario.width;
 mario.bottom = mario.top - mario.height;
-mario.defaultbottom = (480 - 433)*100/480 - mario.height;
+mario.defaultbottom = (480 - 480)*100/480;
 
 function updateMario(){
     mario.left = getValue(mario.element, 'x','%')*100/3360;
-    mario.top = (480 - getValue(mario.element, 'y',"vh"))*100/480;
+    mario.bottom = (480 - getValue(mario.element, 'y',"vh"))*100/480;
     mario.right = mario.left + mario.width;
-    mario.bottom = mario.top - mario.height;
+    mario.top = mario.bottom + mario.height;
 }
 
 var game = document.getElementById("game");         // game is the entire svg wrapper
@@ -223,109 +223,132 @@ function handleKeyUp(event) {
 function onb() { //checks if on block and moves char down if reqd
     if (stay() != -1) {
         transformSvgElement(mario.element,mario.left,rest_top[stay()].top + mario.height);
-    } else if(stay() == -1) {
+    } else {
         transformSvgElement(mario.element,mario.left,mario.defaultbottom + mario.height);
     }
 }
 var falling;
+var ques = document.getElementById('ques');
+var cross = document.getElementById('Notnot');
+var background = document.getElementById('bgrd');
+var i;
 function moveUp(e) {
-    e = e || window.event;
-    if (e.keyCode == '38') {
-        window.removeEventListener("keydown",moveUp);
-        clearTimeout(falling);
-        flag_up = false;
-        // up arrow
-        var flag = 0;
-        jump_start: {
-            for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
-            {
-                if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
-                    if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom){   
-                        flag = 1;
-                        transformSvgElement(mario.element,mario.left,rest_top[ii].bottom);
-                        if (rest_top[ii].element.id == 'CoinBlock'){
-                            questionpopup();
+    if(bgrd.className == 'hideBox '){
+        e = e || window.event;
+        if (e.keyCode == '38' && key_left != true && key_right!=true) {
+            window.removeEventListener("keydown", moveUp);
+            clearTimeout(falling);
+            flag_up = false;
+            // up arrow
+            var flag = 0;
+            jump_start: {
+                for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
+                {
+                    if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
+                        if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
+                        {   
+                            flag = 1;
+                            transformSvgElement(mario.element,mario.left,rest_top[ii].bottom);
+                            if (rest_top[ii].element.id == 'CoinBlock'){
+                                // questionpopup();
+                                var key = rest_top[ii].element.getAttribute('key');
+                                console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
+                                
+                                questionpopup();
+                                
+                                
+
+                            }
+                            break jump_start;
                         }
-                        break jump_start;
                     }
                 }
             }
+            if (flag == 0) {
+                transformSvgElement(mario.element,mario.left,mario.bottom + jump_height);
+                $('#mario').toggleClass('marioJumpAnim');
+            };
+            setTimeout(function() {
+                window.addEventListener("keydown", moveUp);
+                flag_up = true
+            }, (2 * jump_dur) - (jump_dur / 20));
         }
-        if (flag == 0) {
-            transformSvgElement(mario.element,mario.left,mario.bottom + mario.height + jump_height);
-        };
-        setTimeout(function() {
-            window.addEventListener("keydown", moveUp);
-            flag_up = true;
-        }, (2 * jump_dur) - (jump_dur / 20));
+        if (e.keyCode == '38' && key_left == true && key_right!=true) {
+            window.removeEventListener("keydown", moveUp);
+            clearTimeout(falling);
+            flag_up = false;
+            // up arrow
+            var flag = 0;
+            jump_start: {
+                for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
+                {
+                    if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
+                        if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
+                        {   
+                            flag = 1;
+                            pixelx = speed_rel*jump_dur/50;
+                            transformSvgElement(mario.element,mario.left - pixelx,rest_top[ii].bottom);
+                            game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
+                            if (rest_top[ii].element.id == 'CoinBlock'){
+                                questionpopup();
+                            }
+                            break jump_start;
+                        }
+                    }
+                }
+            }
+            if (flag == 0) {
+                pixelx = speed_rel*jump_dur/100;
+                game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
+                transformSvgElement(mario.element,mario.left - speed_rel*jump_dur/100,mario.bottom + jump_height);
+            };
+            setTimeout(function() {
+                window.addEventListener("keydown", moveUp);
+                flag_up = true
+            }, (2 * jump_dur) - (jump_dur / 20));
+        }
+        if (e.keyCode == '38' && key_left != true && key_right ==true ) {
+            window.removeEventListener("keydown", moveUp);
+            clearTimeout(falling);
+            flag_up = false;
+            // up arrow
+            var flag = 0;
+            jump_start: {
+                for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
+                {
+                    if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
+                        if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
+                        {   
+                            flag = 1;
+                            pixelx = speed_rel*jump_dur/100;
+                            transformSvgElement(mario.element,mario.left + pixelx,rest_top[ii].bottom);
+                            game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
+                            if (rest_top[ii].element.id == 'CoinBlock'){
+                                questionpopup();
+                            }
+                            break jump_start;
+                        }
+                    }
+                }
+            }
+            if (flag == 0) {
+                pixelx = speed_rel*jump_dur/100;
+                transformSvgElement(mario.element,mario.left + speed_rel*jump_dur/100,mario.bottom + jump_height);
+                game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
+            
+            };
+            setTimeout(function() {
+                window.addEventListener("keydown", moveUp);
+                flag_up = true
+            }, (2 * jump_dur) - (jump_dur / 20));
+        }
+        falling = setTimeout(onb, jump_dur - (jump_dur / 20)); // called for any key press.
     }
-    // if (e.keyCode == '38' && key_left == true && key_right!=true) {
-    //     window.removeEventListener("keydown", moveUp);
-    //     clearTimeout(falling);
-    //     flag_up = false;
-    //     // up arrow
-    //     var flag = 0;
-    //     jump_start:{
-    //         for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
-    //         {
-    //             if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
-    //                 if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
-    //                 {   
-    //                     flag = 1;
-    //                     pixelx = speed_rel*jump_dur/50;
-    //                     transformSvgElement(mario.element,mario.left - pixelx,rest_top[ii].bottom);
-    //                     game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
-        
-    //                     break jump_start;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     if (flag == 0) {
-    //         pixelx = speed_rel*jump_dur/100;
-    //         game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
-    //         transformSvgElement(mario.element,mario.left - speed_rel*jump_dur/100,mario.bottom + jump_height);
-    //     };
-    //     setTimeout(function() {
-    //         window.addEventListener("keydown", moveUp);
-    //         flag_up = true
-    //     }, (2 * jump_dur) - (jump_dur / 20));
-    // }
-    // if (e.keyCode == '38' && key_left != true && key_right == true) {
-    //     window.removeEventListener("keydown", moveUp);
-    //     clearTimeout(falling);
-    //     flag_up = false;
-    //     // up arrow
-    //     var flag = 0;
-    //     jump_start: {
-    //         for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
-    //         {
-    //             if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
-    //                 if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
-    //                 {   
-    //                     flag = 1;
-    //                     pixelx = speed_rel*jump_dur/100;
-    //                     transformSvgElement(mario.element,mario.left + pixelx,rest_top[ii].bottom);
-    //                     game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
-        
-    //                     break jump_start;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     if (flag == 0) {
-    //         pixelx = speed_rel*jump_dur/100;
-    //         transformSvgElement(mario.element,mario.left + speed_rel*jump_dur/100,mario.bottom + jump_height);
-    //         game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
-        
-    //     };
-    //     setTimeout(function() {
-    //         window.addEventListener("keydown", moveUp);
-    //         flag_up = true
-    //     }, (2 * jump_dur) - (jump_dur / 20));
-    // }
-    falling = setTimeout(onb, jump_dur - (jump_dur / 20)); // called for any key press.
-    }
+}
 
 function moveDown(e) {
     if (e.keyCode == '40') {
@@ -335,9 +358,9 @@ function moveDown(e) {
             window.addEventListener("keydown", moveUp);
         }
         if (stay() != -1) {
-            transformSvgElement(mario.element,mario.left,rest_top[stay()].top + mario.height);
+            transformSvgElement(mario.element,mario.left,rest_top[stay()].top) + mario.height;
         } 
-        else transformSvgElement(mario.element,mario.left,mario.defaultbottom + mario.height);
+        else transformSvgElement(mario.element,mario.left,mario.defaultbottom);
     }
 }
 
@@ -346,8 +369,8 @@ function check_right() {
     for (var ii = 0; ii < rest_left.length; ++ii) {
         var b_left = rest_left[ii].left - speed_rel;
         if (mario.right > b_left && mario.right < (b_left + rest_left[ii].width)) {
-            if ((mario.top < rest_left[ii].top && mario.top > rest_left[ii].bottom) ||
-                (mario.top < rest_left[ii].bottom && mario.top > rest_left[ii].top) ||
+            if ((mario.top < rest_left[ii].top && mario.top >= rest_left[ii].bottom) ||
+                (mario.top < rest_left[ii].bottom &&mario.top > rest_left[ii].top) ||
                 (mario.bottom < rest_left[ii].top && mario.bottom >= rest_left.bottom)) {
                     return ii;
             }
@@ -363,13 +386,14 @@ function check_left() {
         if (mario.left < b_right && mario.left > (b_right - rest_left[ii].width)) {
             if ((mario.top < rest_left[ii].top && mario.top >= rest_left[ii].bottom) ||
             (mario.top < rest_left[ii].bottom && mario.top > rest_left[ii].top) ||
-            (mario.bottom < rest_left[ii].top && mario.bottom >= rest_left[ii].bottom))
+            (mario.bottom < rest_left[ii].top && mario.bottom > rest_left[ii].bottom))
             return ii;
         }
     }
     return -1;
 }
 function moveSide() {
+    if(bgrd.className == 'hideBox '){
     if (key_left == true) {
         // left arrow
         if (check_left() == -1) {
@@ -377,7 +401,7 @@ function moveSide() {
         } else pixelx += mario.left - rest_left[check_left()].right;
         if(pixelx > speed_rel){pixelx = speed_rel;}
         game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left'))) + ((pixelx*3360/100)*ratio) + 'px';         // in pixels here
-        transformSvgElement(mario.element,mario.left - pixelx,mario.bottom + mario.height);
+        transformSvgElement(mario.element,mario.left - pixelx,mario.bottom);
         pixelx = 0;
     }
 
@@ -389,50 +413,120 @@ function moveSide() {
         if(pixelx > speed_rel){pixelx = speed_rel;}
         game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - 
         ((pixelx*3360/100)*ratio)) + 'px';             // in pixels here
-        transformSvgElement(mario.element,mario.left + pixelx,mario.bottom + mario.height);
+        transformSvgElement(mario.element,mario.left + pixelx,mario.bottom);
         pixelx = 0;
     }
 }
+}
 
 window.addEventListener("keydown", moveUp);
-window.addEventListener("keydown", moveDown);
+// window.addEventListener("keydown", moveDown);
 window.addEventListener("keydown", handleKeyDown);
 window.addEventListener("keyup", handleKeyUp);
 
-var ques = document.getElementById("ques");
-var cross = document.getElementById("Notnot");
-var background = document.getElementById("bgrd");
-var i;
+
+/*document.addEventListener('keydown', function abc(event) {
+    if (event.keyCode == 73 ) {//just change the event listeneer to the conditions
+        //of collisions.*/
 function questionpopup() {
-    bgrd.className += ' modalBackground';
-    ques.className += ' questionBox';
-    function typeEffect(element, speed) {
-    var text = $(element).text();
-    $(element).html('');
-    i = 0;
-    var timer = setInterval(function() {
-                    if (i < text.length) {
-                        $(element).append(text.charAt(i));
-                        i++;
-                    } else {
-                        clearInterval(timer);
-                    }
-                }, speed);
-    }
+        bgrd.className += ' modalBackground';
+        ques.className += ' questionBox';
+        function typeEffect(element, speed) {
+        var text = $(element).text();
+        $(element).html('');
+        i = 0;
+        var timer = setInterval(function() {
+                        if (i < text.length) {
+                            $(element).append(text.charAt(i));
+                            i++;
+                        } else {
+                            clearInterval(timer);
+                        }
+                    }, speed);
+        }
 
     $( document ).ready(function() {
-    var speed_ques = 20;
-    var delay = $('h1').text().length * speed_ques + speed_ques;
-    typeEffect($('h1'), speed_ques);
-    setTimeout(function(){
-    $('p').css('display', 'inline-block');
-    typeEffect($('p'), speed_ques);
-    }, delay);
-    });
+        var speed = 30;
+        var delay = $('h1').text().length * speed + speed;
+        typeEffect($('h1'), speed);
+        setTimeout(function(){
+        $('p').css('display', 'inline-block');
+        typeEffect($('p'), speed);
+        }, delay);
+        });
 }
-// }});
+    // }});
 
-cross.addEventListener('click', function bcd(event) {//close the pop-up
-ques.className = 'hideBox ';
-bgrd.className = 'hideBox '; 
-});
+    cross.addEventListener('click', function bcd(event) {//close the pop-up
+    ques.className = 'hideBox ';
+    bgrd.className = 'hideBox '; 
+    });
+
+function getQuestion(key){
+    var data = $.ajax( {
+        type: 'POST',
+        url: '/game/',
+        data: {
+            'questionKey': key
+        },
+        success: function(data) {
+            console.log(data);
+            var obj = JSON.parse;
+            var x = data.question_text;
+            console.log(x);   
+            document.getElementById('p1').innerHTML = x;
+                     
+        }
+        
+    });
+    return data;
+}
+
+//If the below time interval is made shorter, an error occurs - which affects the question text. DO NOT CHANGE THE TIME INTERVAL. I suggest calling the getScore function through an event listener instead.
+
+window.setInterval(getScore, 1000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
+function getScore(){
+    var data = $.ajax( {
+        type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
+        url: '/display_score/',
+        data: {
+            'questionKey': 1
+        },
+        success: function(data) {
+            var obj = JSON.parse;
+            var x = data.score;  
+            document.getElementById('score').innerHTML = x;
+                     
+        }
+        
+    });
+    return data;
+}
+
+
+
+// function post(path, params, method) {
+//     method = method || "post"; // Set method to post by default if not specified.
+
+//     // The rest of this code assumes you are not using a library.
+//     // It can be made less wordy if you use one.
+//     var form = document.createElement("form");
+//     form.setAttribute("method", method);
+//     form.setAttribute("action", path);
+
+//     for(var key in params) {
+//         if(params.hasOwnProperty(key)) {
+//             var hiddenField = document.createElement("input");
+//             hiddenField.setAttribute("type", "hidden");
+//             hiddenField.setAttribute("name", key);
+//             hiddenField.setAttribute("value", params[key]);
+//             //hiddenField.setAttribute();
+
+//             form.appendChild(hiddenField);
+            
+//         }
+//     }
+
+//     document.body.appendChild(form);
+//     form.submit();
+// }

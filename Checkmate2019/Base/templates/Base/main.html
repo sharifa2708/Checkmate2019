@@ -7,35 +7,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Checkmate 2019</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'> 
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/game.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/main.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/question.css' %}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-    <div class="container">
-        <a class="team-head navbar-brand">
-            TEAM NAME:
-        </a>
-            <div class="team-display">
-                <svg width="240" height="110">
-                    <rect width="210" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+    <div class="container-fluid">
+        <div class="navbar-brand guide">
+            <div class="time-head">TIME LEFT:
+            <div class='time-display'>
+                <svg width="200" height="110">
+                    <rect width="150" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
                 </svg>
             </div>
+            </div>
+            <div class='links'>
+                <div><a class="instructions" href="#" style="color: #000000; text-decoration: none;"> INSTRUCTIONS</a></div>
+                <div><a class="leaderboard" href="#" style="color: #000000; text-decoration: none;"> LEADERBOARD</a></div>
+                <div><a class="resetpos" href="#" style="color: #000000; text-decoration: none;"> RESET</a></div>
+                <div><a class="signout" href="#" style="color: #000000; text-decoration: none;"> SIGN OUT</a></div>
+            </div>
         </div>
-        <a class="navbar-brand score-head">
-            SCORE:
-        </a>
-        <div class="score-display">
+        <div class="team-head navbar-brand">
+            TEAM NAME: <br><br> {{teamname}}
+        
+            <!--<div class="team-display">
+                <svg width="240" height="110">
+                    <rect width="210" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+                    
+                </svg>
+                
+            </div>-->
+        </div>
+        <div class="navbar-brand score-head">
+            SCORE: <br> <h5 id = "score"></h5><br>
+    
+        <!--<div class="score-display">
             <svg width="150" height="110">
                 <rect width="140" height="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
             </svg>
-        </div>
+        </div>-->
+    </div>
 
     </div>
-    </nav>
+</nav>
 <!-- write blocks in order of left to right, top to bottom is handled in js -->
 <div id="game">
     <svg id = "svg" width="10000px" viewBox="0 0 3360 480" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -586,22 +608,22 @@
             <g id="Group3" transform="translate(2576.000000, 384.000000)">
                 <image id="brick" class="support onscreen group 3" x="80" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 3" x="96" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
-                <image id="CoinBlock" class="support onscreen group 3" x="128" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="brick" class="support onscreen group 3" x="112" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
+                <image id="CoinBlock" class="support onscreen group 3" key='1' x="128" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="brick" class="support onscreen group 3"  x="112" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 3" x="144" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="Pipesmall" class="support onscreen group 3" x="0" y="32" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGOfPtRkwAAArVJREFUWAntWE1rE1EUPTHVJPiRFkFFF1m4KgQUiy5c+AtciK6KC7sRNy7dWxfuXKkbdVMrUtyIi/4BFYtWtIpCqCAogvWDorGKSWjUc+b2SZLOkxcUZxZz4M37mPvuO7nv3ZkzyQH4yZJaDIjZyetAeWu6ONbfAxePAhHB+RZQaq4mWBkCKoOrxzWy/AOYfWN1vMXfjX4nJyEiWPsA5Ns2oGu9Ye0DrHwE2yR47zVQyAO5HM8JD8qXmB9pnuKvmwpAi+s2WdTWuqrlr71ocyKCx0aAoe020FwGzs9wEusQaG65aM4vcF4/GN0F1D6yMEBqTzwGIn8k+ektcJbO1vTj8F/bTjwyj4erRm5sj0Wwc51ECY7uNirTNYvg1FNgqeeYJEpQWyvs3GzbPLwFWMcz3YmMYGc0ettKDKFri1ceL3YnSxIXh/g6S5L4uISPpj6LsyQJ38x4y5AkicTC3UmguNGcSEZ9W5FR85RaDUquODi7O3NUNPQicdHgvH4w9wx495VlCXi4A1jg/Nv3zV+DYwKFDV6pQZRZPOovuv8/L3Uu9lkLiqDDaeqw8cIG1zUxKt0nKEpxaDFyeb4wVYRQmSZ/vXOj+YwoteUZtsfV71q2vA04dUvDBgnSGZYirY7vs9rdc/XlWaDKz4X9FW4xyV5hX/Wf4PxNUv+5uc7+3CGGbsH1eghKybqzKJO16xniEhskWOIZjYui7g/QTvNyIsZ+VMuBB1JU1yixjuwFXi4CN16YUJW5OHQiETWj46DIiZwgmeVDMgQZpSqPU2oJ6kNJcv/gsMVt6okvfgnJLZ3lE0y6m8+N2NhIygjqUXSVGfw7gvwW8SGZM5gliW8/AsezJAkMlNcsSxJvaAJv5LM3SWCkfGbZm8QXmdDxTG6FRspnpzfJpQeA/lkV3D+t1uu+/gLRXP3h80I+pwAAAABJRU5ErkJggg=="></image>
                 <image id="Pipesmall" class="support onscreen group 3" x="256" y="32" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGOfPtRkwAAArVJREFUWAntWE1rE1EUPTHVJPiRFkFFF1m4KgQUiy5c+AtciK6KC7sRNy7dWxfuXKkbdVMrUtyIi/4BFYtWtIpCqCAogvWDorGKSWjUc+b2SZLOkxcUZxZz4M37mPvuO7nv3ZkzyQH4yZJaDIjZyetAeWu6ONbfAxePAhHB+RZQaq4mWBkCKoOrxzWy/AOYfWN1vMXfjX4nJyEiWPsA5Ns2oGu9Ye0DrHwE2yR47zVQyAO5HM8JD8qXmB9pnuKvmwpAi+s2WdTWuqrlr71ocyKCx0aAoe020FwGzs9wEusQaG65aM4vcF4/GN0F1D6yMEBqTzwGIn8k+ektcJbO1vTj8F/bTjwyj4erRm5sj0Wwc51ECY7uNirTNYvg1FNgqeeYJEpQWyvs3GzbPLwFWMcz3YmMYGc0ettKDKFri1ceL3YnSxIXh/g6S5L4uISPpj6LsyQJ38x4y5AkicTC3UmguNGcSEZ9W5FR85RaDUquODi7O3NUNPQicdHgvH4w9wx495VlCXi4A1jg/Nv3zV+DYwKFDV6pQZRZPOovuv8/L3Uu9lkLiqDDaeqw8cIG1zUxKt0nKEpxaDFyeb4wVYRQmSZ/vXOj+YwoteUZtsfV71q2vA04dUvDBgnSGZYirY7vs9rdc/XlWaDKz4X9FW4xyV5hX/Wf4PxNUv+5uc7+3CGGbsH1eghKybqzKJO16xniEhskWOIZjYui7g/QTvNyIsZ+VMuBB1JU1yixjuwFXi4CN16YUJW5OHQiETWj46DIiZwgmeVDMgQZpSqPU2oJ6kNJcv/gsMVt6okvfgnJLZ3lE0y6m8+N2NhIygjqUXSVGfw7gvwW8SGZM5gliW8/AsezJAkMlNcsSxJvaAJv5LM3SWCkfGbZm8QXmdDxTG6FRspnpzfJpQeA/lkV3D+t1uu+/gLRXP3h80I+pwAAAABJRU5ErkJggg=="></image>
             </g> 
             <g id="Group2" transform="translate(1216.000000, 320.000000)">
-                <image id="CoinBlock" class="support onscreen group 2" x="16" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="288" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="384" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="464" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="512" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="512" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="560" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="832" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 2" x="848" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key='2' x="16" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '3' x="288" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '4' x="384" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '5' x="464" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '6' x="512" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '7' x="512" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '8' x="560" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '9' x="832" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 2" key = '10' x="848" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
                 <image id="brick" class="support onscreen group 2" x="0" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 2" x="32" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 2" x="64" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
@@ -628,10 +650,10 @@
                 <image id="brick" class="support onscreen group 2" x="848" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
             </g>
             <g id="Group1" transform="translate(256.000000, 320.000000)">
-                <image id="CoinBlock" class="support onscreen group 1" x="0" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 1" x="96" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 1" x="112" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
-                <image id="CoinBlock" class="support onscreen group 1" x="80" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 1" key = '11' x="0" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 1" key = '12' x="96" y="0" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 1" key = '13' x="112" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
+                <image id="CoinBlock" class="support onscreen group 1" key = '14' x="80" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAALtJREFUOBGdk9ENwjAMRBPUJfrJOvDHDB2rM/BH1+knY5ScqhesxAkKkSqDfXc5n9oY0llv4VAdPcsW4iTy/XEd5Z74bT8uMOdl5+fParET6Pf6dfF61mLWpcVmBwhBTvsFHs3og6NWAgxUdZO9zVoH1xUA1Ks5A0Da1d7Usg6+EtAA25CVReu4Ah4Y0XLWFSjXKcn63w1RK6Q3Na80LADBhkqPmh14IK3gBWixOYNWSF7f9mKy8tenzAofWvg7l04otIIAAAAASUVORK5CYII="></image>
                 <image id="brick" class="support onscreen group 1" x="64" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 1" x="128" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
                 <image id="brick" class="support onscreen group 1" x="96" y="64" width="16" height="16" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAAFNJREFUOBFj/H/u2H8GCgDjHC8GnAakbGNgAMrjBCB5JpyyREowAtXhdAExZrAgO5EYJyOrB1lAsRcoNoC6YYAeaMSECcVeoNgA6oYBMX4ehukAAMzTGno0ytoSAAAAAElFTkSuQmCC"></image>
@@ -712,18 +734,24 @@
 <div class="hideBox " id="ques">
 <div class="Shadow">
 <div class="questionText">
-    <p>
-        Q. Yeah what the heck is mario even doing here in such a mess , can someone pls tell him that he has his cp lab tommorrow at 8.
+    
+    <p id="p1">  
+        {% csrf_token %}
+        {{question}}
     </p>
 </div>
 <div class="answerBox">
     <label>Answer<br>
-    <input type="text" name="Answer" placeholder="Enter the Answer" id="textArea">
+<form method = 'POST', action = '/check_answer/'>
+    {%csrf_token%}
+    <input type="text" name="answer" placeholder="Enter the Answer" id="textArea">
+    
     </label>
 </div>
 <div class="submit">
-    <button class="submitButton">Submit</button>    
+    <button type = 'submit' class="submitButton" id = "submit1">Submit</button>  
 </div>
+</form>
 <div class="close">
     Can't Solve Eh?
 <img src="{% static 'vector/window-close-regular.svg' %}" alt="Close button" id="Notnot">
@@ -732,8 +760,7 @@
 </div>
 </div>
 </div>
-
 <script type="text/javascript" src="{% static 'js/jquery-min.js' %}"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 </body>
