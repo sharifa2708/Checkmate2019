@@ -207,7 +207,7 @@ var jump_dur = 200;         //ms
 var speed_rel = 0.1;
 var jump_height = 15;     //percentage of 480
 
-var ratio = 10000/6720; //change to get width
+var ratio = ($('#mainsvg').width())/6720; //change to get width
 var speed = (speed_rel*6720/100)*ratio;              //pixels
 var pixelx = 0;
 var direction = 1; // not used rn
@@ -306,8 +306,22 @@ function moveUp(e) {
                             pixelx = speed_rel*jump_dur/50;
                             transformSvgElement(mario.element,mario.left - pixelx,rest_top[ii].bottom);
                             game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
-                            if (rest_top[ii].element.id == 'CoinBlock'){
+                            // if (rest_top[ii].element.id == 'CoinBlock'){
+                            //     questionpopup();
+                            // }
+                            if (rest_top[ii].element.id == 'CoinBlock') {
+                                // questionpopup();
+                                var key = rest_top[ii].element.getAttribute('key');
+                                console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
+
                                 questionpopup();
+
+
+
                             }
                             break jump_start;
                         }
@@ -340,8 +354,22 @@ function moveUp(e) {
                             pixelx = speed_rel*jump_dur/100;
                             transformSvgElement(mario.element,mario.left + pixelx,rest_top[ii].bottom);
                             game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
-                            if (rest_top[ii].element.id == 'CoinBlock'){
+                            // if (rest_top[ii].element.id == 'CoinBlock'){
+                            //     questionpopup();
+                            // }
+                            if (rest_top[ii].element.id == 'CoinBlock') {
+                                // questionpopup();
+                                var key = rest_top[ii].element.getAttribute('key');
+                                console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
+
                                 questionpopup();
+
+
+
                             }
                             break jump_start;
                         }
@@ -472,10 +500,13 @@ function questionpopup() {
 
     cross.addEventListener('click', function bcd(event) {//close the pop-up
     ques.className = 'hideBox ';
-    bgrd.className = 'hideBox '; 
+    bgrd.className = 'hideBox ';
+    $('.answerTextField').val('');
     });
 
 function getQuestion(key){
+    
+    document.getElementById('p1').innerHTML = "";
     var data = $.ajax( {
         type: 'POST',
         url: '/game/',
@@ -497,7 +528,7 @@ function getQuestion(key){
 
 //If the below time interval is made shorter, an error occurs - which affects the question text. DO NOT CHANGE THE TIME INTERVAL. I suggest calling the getScore function through an event listener instead.
 
-window.setInterval(getScore, 1000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
+window.setInterval(getScore, 3000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
 function getScore(){
     var data = $.ajax( {
         type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
