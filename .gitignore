@@ -7,3 +7,4 @@ env
 *.xml
 *.iml
 db.sqlite3
+checkmate-env
