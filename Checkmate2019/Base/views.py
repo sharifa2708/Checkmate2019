@@ -12,6 +12,7 @@ import re
 from django.core import validators
 
 current_question_key = 0
+negative_marking_factor = 5
 
 def index(request):
     if not request.user.is_authenticated:
@@ -129,7 +130,12 @@ def check_answer(request):
                 current_team.questions_answered.add(question)
                 current_team.save()        
         else:
-            pass
+            # This is required to prevent the score from decreasing the score if someone has answered it correctly earlier
+            if question in current_team.questions_answered.all():
+                pass
+            else :
+                current_team.score = current_score - question.score_increment//negative_marking_factor
+                current_team.save()
         return HttpResponse(status=204) #This means that the server has successfully processed the request and is not going to return any data.
     else:
         return HttpResponse("You weren't supposed to be here you know")
@@ -166,7 +172,7 @@ def sign_out(request):
 
 @login_required
 def leaderboard(request):
-    leaderboard = Team.objects.order_by('rank')[:9]
+    leaderboard = Team.objects.order_by('-score')[:9]
     Leaderboard = enumerate([[team.user.username, team.score]
                              for team in leaderboard], 1)
     return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard})
