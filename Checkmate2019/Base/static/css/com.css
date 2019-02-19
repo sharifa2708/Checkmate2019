@@ -3,10 +3,17 @@ html{
 	font-family: 'Press Start 2P', cursive;
 	font-size: 4vh;
 	background: url("./pics/bg.jpg");
+	height: 100vh;
+	width: 100vw;
 }
 
 html,body{
 	margin: 0;
+}
+
+body{
+	position: relative;
+	overflow: none;
 }
 
 .wrapper{
@@ -81,11 +88,14 @@ button:hover{
 	color: white;
 }
 a{
-	font-family: Arial;
+	position: absolute;
+	top:5vh;
+	right: 2vw;
+	font-size: 1.1em;
+	font-family: 'Special Elite', cursive;
 	color: white;
-	font-size: 20px;
-	margin-left: 90vw;
 	cursor: pointer;
+	background: transparent;
 	text-decoration: none;
 }
 
