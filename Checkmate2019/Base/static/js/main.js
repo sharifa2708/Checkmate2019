@@ -530,6 +530,14 @@ function questionpopup() {
         });
 }
 
+var press_submit = document.getElementById('submit1');
+
+press_submit.addEventListener('click', function closepopup(event){
+    ques.className = 'hideBox ';
+    bgrd.className = 'hideBox ';
+    $('.answerTextField').val('');
+});
+
 cross.addEventListener('click', function bcd(event) {//close the pop-up
     ques.className = 'hideBox ';
     bgrd.className = 'hideBox ';
@@ -575,6 +583,31 @@ function getScore(){
                      
         }
         
+    });
+    return data;
+}
+
+window.setInterval(getCorrectQuestions, 3000)
+function getCorrectQuestions(){
+    var data = $.ajax( {
+        type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
+        url: '/get_question_list',
+        data: {},
+        success: function(data) {
+            var obj = JSON.parse;
+            var x = data.correct_list;
+            console.log(x);
+            for(var p = 0 ; p < x.length ; p ++){
+                var demo = x[p];
+                console.log(demo);
+
+            var questionBlock = $('[key=' +  demo + ']');
+            console.log(questionBlock);
+            questionBlock.css('display', 'none');
+            }
+        }
+
+
     });
     return data;
 }
