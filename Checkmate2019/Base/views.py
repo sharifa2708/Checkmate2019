@@ -21,6 +21,14 @@ def index(request):
         return render(request, "Base/index.html", {})
     return render(request, "Base/index.html", {})
 
+def get_question_list(request):
+    current_team = Team.objects.get(user = request.user)
+    dushyant = current_team.questions_answered.all()
+    dushyant_list = []
+    for x in dushyant:
+        dushyant_list.append(x.id)
+    data = {'correct_list':dushyant_list}
+    return JsonResponse(data)
     
 def sign_up(request):
     if not request.user.is_authenticated: # This is to check that when user is logged in, he is not able to create a new team
