@@ -291,54 +291,58 @@ function moveUp(e) {
             }, (2 * jump_dur) - (jump_dur / 20));
         }
         if (e.keyCode == '38' && key_left == true && key_right!=true) {
-            window.removeEventListener("keydown", moveUp);
-            clearTimeout(falling);
-            flag_up = false;
-            // up arrow
-            var flag = 0;
-            jump_start: {
-                for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
-                {
-                    if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
-                        if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
-                        {   
-                            flag = 1;
-                            pixelx = speed_rel*jump_dur/50;
-                            transformSvgElement(mario.element,mario.left - pixelx,rest_top[ii].bottom);
-                            game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
-                            // if (rest_top[ii].element.id == 'CoinBlock'){
-                            //     questionpopup();
-                            // }
-                            if (rest_top[ii].element.id == 'CoinBlock') {
-                                // questionpopup();
-                                var key = rest_top[ii].element.getAttribute('key');
-                                console.log(key);
-                                var data = getQuestion(key);
-                                var text = JSON.stringify(data);
-                                // console.log(text);
-                                // console.log(data);
+            
+                window.removeEventListener("keydown", moveUp);
+                clearTimeout(falling);
+                flag_up = false;
+                // up arrow
+                var flag = 0;
+                jump_start: {
+                    for (var ii = rest_top.length - 1; ii > -1; --ii) //ascending order
+                    {
+                        if (mario.left < rest_top[ii].right && mario.right > rest_top[ii].left){
+                            if(rest_top[ii].bottom - mario.top <= jump_height && mario.top < rest_top[ii].bottom)
+                            {   
+                                flag = 1;
+                                pixelx = speed_rel*jump_dur/50;
+                                transformSvgElement(mario.element,mario.left - pixelx,rest_top[ii].bottom);
+                                game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
+                                // if (rest_top[ii].element.id == 'CoinBlock'){
+                                //     questionpopup();
+                                // }
+                                if (rest_top[ii].element.id == 'CoinBlock') {
+                                    // questionpopup();
+                                    var key = rest_top[ii].element.getAttribute('key');
+                                    console.log(key);
+                                    var data = getQuestion(key);
+                                    var text = JSON.stringify(data);
+                                    // console.log(text);
+                                    // console.log(data);
 
-                                questionpopup();
+                                    questionpopup();
 
 
 
+                                }
+                                break jump_start;
                             }
-                            break jump_start;
                         }
                     }
                 }
-            }
-            if (flag == 0) {
-                pixelx = speed_rel*jump_dur/100;
-                game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
-                transformSvgElement(mario.element,mario.left - speed_rel*jump_dur/100,mario.bottom + mario.height + jump_height);
-            };
-            setTimeout(function() {
-                window.addEventListener("keydown", moveUp);
-                flag_up = true
-            }, (2 * jump_dur) - (jump_dur / 20));
+                if (flag == 0) {
+                    pixelx = speed_rel*jump_dur/100;
+                    game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) + ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
+                    transformSvgElement(mario.element,mario.left - speed_rel*jump_dur/100,mario.bottom + mario.height + jump_height);
+                };
+
+                setTimeout(function() {
+                    window.addEventListener("keydown", moveUp);
+                    flag_up = true
+                }, (2 * jump_dur) - (jump_dur / 20));
+            
         }
         if (e.keyCode == '38' && key_left != true && key_right ==true ) {
+            
             window.removeEventListener("keydown", moveUp);
             clearTimeout(falling);
             flag_up = false;
@@ -374,6 +378,7 @@ function moveUp(e) {
                             break jump_start;
                         }
                     }
+                
                 }
             }
             if (flag == 0) {
@@ -388,6 +393,7 @@ function moveUp(e) {
             }, (2 * jump_dur) - (jump_dur / 20));
         }
         falling = setTimeout(onb, jump_dur - (jump_dur / 20)); // called for any key press.
+
     }
 }
 
@@ -436,26 +442,31 @@ function check_left() {
 function moveSide() {
     if(bgrd.className == 'hideBox '){
     if (key_left == true) {
-        // left arrow
-        if (check_left() == -1) {
-            pixelx += speed_rel;
-        } else pixelx += mario.left - rest_left[check_left()].right;
-        if(pixelx > speed_rel){pixelx = speed_rel;}
-        game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left'))) + ((pixelx*6720/100)*ratio) + 'px';         // in pixels here
-        transformSvgElement(mario.element,mario.left - pixelx,mario.bottom + mario.height);
-        pixelx = 0;
+        if(mario.left>=2.7339285714285726){
+                // left arrow
+                console.log(mario.left);
+                if (check_left() == -1) {
+                    pixelx += speed_rel;
+                } else pixelx += mario.left - rest_left[check_left()].right;
+                if(pixelx > speed_rel){pixelx = speed_rel;}
+                game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left'))) + ((pixelx*6720/100)*ratio) + 'px';         // in pixels here
+                transformSvgElement(mario.element,mario.left - pixelx,mario.bottom + mario.height);
+                pixelx = 0;
+            }
     }
 
     if (key_right == true) {
-        // right arrow
-        if (check_right() == -1) {
-            pixelx += speed_rel;
-        } else pixelx += (rest_left[check_right()].left - mario.right);
-        if(pixelx > speed_rel){pixelx = speed_rel;}
-        game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - 
-        ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
-        transformSvgElement(mario.element,mario.left + pixelx,mario.bottom + mario.height);
-        pixelx = 0;
+        if(mario.left<=90.24583333333325){
+            // right arrow
+            if (check_right() == -1) {
+                pixelx += speed_rel;
+            } else pixelx += (rest_left[check_right()].left - mario.right);
+            if(pixelx > speed_rel){pixelx = speed_rel;}
+            game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left')) - 
+            ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
+            transformSvgElement(mario.element,mario.left + pixelx,mario.bottom + mario.height);
+            pixelx = 0;
+            }
     }
 }
 }
