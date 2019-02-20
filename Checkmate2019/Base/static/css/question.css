@@ -82,9 +82,13 @@ table {
 	/*border:1px solid blue;*/
 	text-align: right;
 	padding-right: .7vw;
-	font-style: italic;
-	font-size: 18px;
+/*	font-style: italic;
+*/	font-size: 18px;
 	margin: .3vh;
+	text-shadow: none;
+}
+.close:hover {
+	color: white;
 }
 .close #Notnot{
 	background-color: red;
