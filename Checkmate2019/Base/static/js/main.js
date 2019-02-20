@@ -535,7 +535,6 @@ var press_submit = document.getElementById('submit1');
 press_submit.addEventListener('click', function closepopup(event){
     ques.className = 'hideBox ';
     bgrd.className = 'hideBox ';
-    $('.answerTextField').val('');
 });
 
 cross.addEventListener('click', function bcd(event) {//close the pop-up
@@ -546,6 +545,8 @@ cross.addEventListener('click', function bcd(event) {//close the pop-up
 
 function getQuestion(key){   
     document.getElementById('p1').innerHTML = "";
+
+    console.log($('.answerTextField').val())
 
     var data = $.ajax( {
         type: 'POST',
