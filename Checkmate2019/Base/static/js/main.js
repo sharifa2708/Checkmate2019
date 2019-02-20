@@ -374,6 +374,7 @@ function moveUp(e) {
                             break jump_start;
                         }
                     }
+                
                 }
             }
             if (flag == 0) {
@@ -397,6 +398,7 @@ function moveUp(e) {
             }, (2 * jump_dur) - (jump_dur / 20));
         }
         falling = setTimeout(onb, jump_dur - (jump_dur / 20)); // called for any key press.
+
     }
 }
 
