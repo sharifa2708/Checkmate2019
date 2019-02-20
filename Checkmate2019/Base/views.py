@@ -193,11 +193,14 @@ def sign_out(request):
 @login_required
 def leaderboard(request):
     leaderboard = Team.objects.order_by('-score')
-    # current_user_rank = 
+    A = []
+    for a in leaderboard :
+        A.append(a.user.username)
+    current_user_rank = A.index(request.user.username)+1
     leaderboard = leaderboard[:9]
     Leaderboard = enumerate([[team.user.username, team.score]
                              for team in leaderboard], 1)
-    return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard})
+    return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard, 'rank': current_user_rank})
 
 
 #Checks if a member is in a particular team. If the member is already in a team that has just one member, the team is deleted. Otherwise nothing happens to the team.
