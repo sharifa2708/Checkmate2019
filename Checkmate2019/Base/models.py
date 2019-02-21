@@ -18,9 +18,7 @@ class Team(models.Model):
 
 
 class Member(models.Model):
-    id = models.CharField(max_length=13, primary_key=True, validators=[
-        validators.RegexValidator(re.compile('^201[5-8]{1}[0-9A-Z]{4}[0-9]{4}P$'),
-                                  message='Enter your valid BITS ID, for eg. 2018A7PS0210P')])
+    id = models.CharField(max_length=13, primary_key=True)
     team = models.ForeignKey(
         Team, on_delete=models.CASCADE, blank=False, related_name="Member")
 
