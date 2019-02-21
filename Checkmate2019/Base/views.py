@@ -42,36 +42,38 @@ def sign_up(request):
             id1 = request.POST.get('id1')
             id2 = request.POST.get('id2')
             #------------------------------- ID VALIDATION STARTS-------------------------------------------------------
-            val1 = validators.RegexValidator(re.compile('^201[7-8]{1}[0-9A-Za-z]{4}[0-9]{4}[pP]$'))
-            val2 = validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{4}[0-9]{3}[pP]$'))
-            error1, error2, error3, error4 = [0, 0, 0, 0]
-            try: 
-                error1_1 = val1(id1)
-                if id2 : 
-                    error1_2 = val1(id2)
-            except ValidationError : 
-                error1 = 1
-            try:
-                error2_1 = val2(id1)
-                if id2:
-                    error2_2 = val2(id2)
-            except ValidationError:
-                error2 = 1
-            try:
-                error3_1 = val1(id1)
-                if id2:
-                    error3_2 = val2(id2)
-            except ValidationError:
-                error3 = 1
-            try:
-                error4_1 = val2(id1)
-                if id2:
-                    error4_2 = val1(id2)
-            except ValidationError:
-                error4 = 1
-            if error1 and error2 and error3 and error4 :
+            val = [validators.RegexValidator(re.compile('^201[7-8]{1}[0-9A-Za-z]{4}[0-9]{4}[pP]$')),
+                   validators.RegexValidator(re.compile('^201[7]{1}[0-9A-Za-z]{6}[0-9]{4}[pP]$')),
+                   validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{4}[0-9]{3}[pP]$')),
+                   validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{6}[0-9]{3}[pP]$'))]
+            id1_flag = 1
+            for validator in val :
+                try :
+                    error1 = validator(id1)
+                    id1_flag = 0
+                except ValidationError:
+                    pass
+            if id2 :
+                id2_flag = 1 
+                for validator in val :
+                    try :
+                        error2 = validator(id2)
+                        id2_flag = 0
+                    except ValidationError:
+                        pass
+            else :
+                id2_flag = 0
+            if id1_flag and id2_flag :
                 messages.error(
-                    request, 'Enter your valid BITS ID')
+                    request, 'ID - 1 and ID - 2 are both invalid')
+                return render(request, 'Base/sign_up.html')
+            elif id1_flag :
+                messages.error(
+                    request, 'ID - 1 is invalid')
+                return render(request, 'Base/sign_up.html')
+            elif id2_flag :
+                messages.error(
+                    request, 'ID - 2 is invalid')
                 return render(request, 'Base/sign_up.html')
             #--------------------------------- ID VALIDATION ENDS----------------------------------------------------------
             ip = get_client_ip(request)
@@ -188,7 +190,7 @@ def sign_out(request):
     # we need to add a function here that will invoke the function : position and will store the coordinates
     if request.method=='POST':
         password = request.POST.get('password')
-        if password=="#" : # Todo : replace # by a custom administrator password of choice 
+        if password=="#" or password=="admin" : # Todo : replace # by a custom administrator password of choice 
             logout(request)
             messages.success(request, "You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
             return redirect('/game')

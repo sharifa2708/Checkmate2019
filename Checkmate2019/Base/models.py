@@ -18,7 +18,7 @@ class Team(models.Model):
 
 
 class Member(models.Model):
-    id = models.CharField(max_length=13, primary_key=True)
+    id = models.CharField(max_length=15, primary_key=True)
     team = models.ForeignKey(
         Team, on_delete=models.CASCADE, blank=False, related_name="Member")
 
