@@ -1,8 +1,9 @@
 html{
 	font-family: 'Orbitron', sans-serif;
 	font-family: 'Press Start 2P', cursive;
-	font-size: 4vh;
+	font-size: 3.7vh;
 	background: url("./pics/bg.jpg");
+	background:black;	
 	height: 100vh;
 	width: 100vw;
 }
@@ -12,8 +13,9 @@ html,body{
 }
 
 body{
+
 	position: relative;
-	overflow: hidden;
+	
 }
 
 .wrapper{
@@ -22,6 +24,9 @@ body{
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	height: 95vh;
+	width: 100vw;
+	border-bottom: 2px solid #eeeeee;
 }
 
 
@@ -32,7 +37,6 @@ body{
 	text-align: center;
 	min-height: 10vh;
 	flex: 0 1 50%;
-	border-bottom: 2px solid #eeeeee;
 	height: 95vh;
 }
 
@@ -58,7 +62,7 @@ input{
 	color: white;
 	outline: none;
 	box-sizing: border-box;
-	padding: 1vh;
+	padding: 0.5vh;
 	border: none;
 	width: 30vw;
 	background: transparent;
@@ -104,6 +108,8 @@ a:hover{
 }
 
 .alert{
+	box-sizing: border-box;
+	max-height: 4vh;
 	margin-left:135px;
 	margin-bottom:0px;
 	z-index: 2;
