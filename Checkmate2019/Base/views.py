@@ -10,6 +10,7 @@ from ipware import get_client_ip
 from django.contrib.auth.models import User
 import re
 from django.core import validators
+from django.core.exceptions import ValidationError
 
 current_question_key = 0
 negative_marking_factor = 5
@@ -20,6 +21,14 @@ def index(request):
         return render(request, "Base/index.html", {})
     return render(request, "Base/index.html", {})
 
+def get_question_list(request):
+    current_team = Team.objects.get(user = request.user)
+    dushyant = current_team.questions_answered.all()
+    dushyant_list = []
+    for x in dushyant:
+        dushyant_list.append(x.id)
+    data = {'correct_list':dushyant_list}
+    return JsonResponse(data)
     
 def sign_up(request):
     if not request.user.is_authenticated: # This is to check that when user is logged in, he is not able to create a new team
@@ -30,24 +39,43 @@ def sign_up(request):
                 messages.error(request, "Sorry the Team Name has already been taken. Please try with some other team name")
                 return render(request, 'Base/sign_up.html')
             password = request.POST.get('password')
-            user = User.objects.create_user(
-                username=team_name, password=password)
             id1 = request.POST.get('id1')
             id2 = request.POST.get('id2')
-            val = validators.RegexValidator(re.compile('^201[5-8]{1}[0-9A-Z]{4}[0-9]{4}P$'),
-                                            message='Enter your valid BITS ID, for eg. 2018A7PS0210P')
-            error = 0
+            #------------------------------- ID VALIDATION STARTS-------------------------------------------------------
+            val1 = validators.RegexValidator(re.compile('^201[7-8]{1}[0-9A-Za-z]{4}[0-9]{4}[pP]$'))
+            val2 = validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{4}[0-9]{3}[pP]$'))
+            error1, error2, error3, error4 = [0, 0, 0, 0]
+            try: 
+                error1_1 = val1(id1)
+                if id2 : 
+                    error1_2 = val1(id2)
+            except ValidationError : 
+                error1 = 1
             try:
-                error1 = val(id1)
-                if id2 :
-                    error2 = val(id2)
-            except Exception :
-                error = 1
-            if error:
+                error2_1 = val2(id1)
+                if id2:
+                    error2_2 = val2(id2)
+            except ValidationError:
+                error2 = 1
+            try:
+                error3_1 = val1(id1)
+                if id2:
+                    error3_2 = val2(id2)
+            except ValidationError:
+                error3 = 1
+            try:
+                error4_1 = val2(id1)
+                if id2:
+                    error4_2 = val1(id2)
+            except ValidationError:
+                error4 = 1
+            if error1 and error2 and error3 and error4 :
                 messages.error(
                     request, 'Enter your valid BITS ID')
                 return render(request, 'Base/sign_up.html')
+            #--------------------------------- ID VALIDATION ENDS----------------------------------------------------------
             ip = get_client_ip(request)
+            user = User.objects.create_user(username=team_name, password=password)
             user.save()
             team = Team(user=user,
                         ip_address=ip, score=0, puzzles_solved=0, rank=0)
@@ -172,10 +200,15 @@ def sign_out(request):
 
 @login_required
 def leaderboard(request):
-    leaderboard = Team.objects.order_by('-score')[:9]
+    leaderboard = Team.objects.order_by('-score')
+    A = []
+    for a in leaderboard :
+        A.append(a.user.username)
+    current_user_rank = A.index(request.user.username)+1
+    leaderboard = leaderboard[:9]
     Leaderboard = enumerate([[team.user.username, team.score]
                              for team in leaderboard], 1)
-    return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard})
+    return render(request, 'Base/leaderboard.html', {'Leaderboard': Leaderboard, 'rank': current_user_rank})
 
 
 #Checks if a member is in a particular team. If the member is already in a team that has just one member, the team is deleted. Otherwise nothing happens to the team.
