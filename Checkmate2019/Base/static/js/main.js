@@ -209,9 +209,7 @@ var jump_height = 15;     //percentage of 480
 var actualwidth = $('#mainsvg').width();
 var ratio = actualwidth/6720; //change to get width
 var defaultleft = 177*100/6720;
-var endingleft = (1 - (0.95*window.innerWidth)/actualwidth)*100;
-console.log(endingleft);
-
+var endingleft = (1 - (0.83*window.innerWidth)/actualwidth)*100;
 var speed = (speed_rel*6720/100)*ratio;              //pixels
 var pixelx = 0;
 var direction = 1; // not used rn
@@ -269,7 +267,7 @@ function moveUp(e) {
                             if (rest_top[ii].element.id == 'CoinBlock'){
                                 // questionpopup();
                                 var key = rest_top[ii].element.getAttribute('key');
-                                console.log(key);
+                                // console.log(key);
                                 var data = getQuestion(key);
                                 var text = JSON.stringify(data);
                                 // console.log(text);
@@ -317,6 +315,12 @@ function moveUp(e) {
                                 game.style.left = (parseFloat(window.getComputedStyle(document.getElementById("game")).getPropertyValue('left'))) + ((pixelx*6720/100)*ratio) + 'px';         // in pixels here
                             }
                             if (rest_top[ii].element.id == 'CoinBlock'){
+                                var key = rest_top[ii].element.getAttribute('key');
+                                // console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
                                 questionpopup();
                             }
                             break jump_start;
@@ -371,11 +375,18 @@ function moveUp(e) {
                                 ((pixelx*6720/100)*ratio)) + 'px';             // in pixels here
                             }
                             if (rest_top[ii].element.id == 'CoinBlock'){
+                                var key = rest_top[ii].element.getAttribute('key');
+                                // console.log(key);
+                                var data = getQuestion(key);
+                                var text = JSON.stringify(data);
+                                // console.log(text);
+                                // console.log(data);
                                 questionpopup();
                             }
                             break jump_start;
                         }
                     }
+                
                 }
             }
             if (flag == 0) {
@@ -399,6 +410,7 @@ function moveUp(e) {
             }, (2 * jump_dur) - (jump_dur / 20));
         }
         falling = setTimeout(onb, jump_dur - (jump_dur / 20)); // called for any key press.
+
     }
 }
 
@@ -518,12 +530,24 @@ function questionpopup() {
         });
 }
 
-cross.addEventListener('click', function bcd(event) {//close the pop-up
+var press_submit = document.getElementById('submit1');
+
+press_submit.addEventListener('click', function closepopup(event){
     ques.className = 'hideBox ';
-    bgrd.className = 'hideBox '; 
+    bgrd.className = 'hideBox ';
 });
 
-function getQuestion(key){
+cross.addEventListener('click', function bcd(event) {//close the pop-up
+    ques.className = 'hideBox ';
+    bgrd.className = 'hideBox ';
+    $('.answerTextField').val('');
+});
+
+function getQuestion(key){   
+    document.getElementById('p1').innerHTML = "";
+
+    console.log($('.answerTextField').val())
+
     var data = $.ajax( {
         type: 'POST',
         url: '/game/',
@@ -534,7 +558,7 @@ function getQuestion(key){
             console.log(data);
             var obj = JSON.parse;
             var x = data.question_text;
-            console.log(x);   
+            console.log(x);
             document.getElementById('p1').innerHTML = x;
                      
         }
@@ -545,7 +569,7 @@ function getQuestion(key){
 
 //If the below time interval is made shorter, an error occurs - which affects the question text. DO NOT CHANGE THE TIME INTERVAL. I suggest calling the getScore function through an event listener instead.
 
-window.setInterval(getScore, 1000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
+window.setInterval(getScore, 3000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
 function getScore(){
     var data = $.ajax( {
         type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
@@ -560,6 +584,31 @@ function getScore(){
                      
         }
         
+    });
+    return data;
+}
+
+window.setInterval(getCorrectQuestions, 3000)
+function getCorrectQuestions(){
+    var data = $.ajax( {
+        type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
+        url: '/get_question_list',
+        data: {},
+        success: function(data) {
+            var obj = JSON.parse;
+            var x = data.correct_list;
+            console.log(x);
+            for(var p = 0 ; p < x.length ; p ++){
+                var demo = x[p];
+                console.log(demo);
+
+            var questionBlock = $('[key=' +  demo + ']');
+            console.log(questionBlock);
+            questionBlock.css('display', 'none');
+            }
+        }
+
+
     });
     return data;
 }
