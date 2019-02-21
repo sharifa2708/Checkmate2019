@@ -209,7 +209,9 @@ var jump_height = 15;     //percentage of 480
 var actualwidth = $('#mainsvg').width();
 var ratio = actualwidth/6720; //change to get width
 var defaultleft = 177*100/6720;
-var endingleft = (6720 - ((1720/ratio)))*100/6720;
+var endingleft = (1 - (0.95*window.innerWidth)/actualwidth)*100;
+console.log(endingleft);
+
 var speed = (speed_rel*6720/100)*ratio;              //pixels
 var pixelx = 0;
 var direction = 1; // not used rn
