@@ -43,9 +43,7 @@ def sign_up(request):
             id2 = request.POST.get('id2')
             #------------------------------- ID VALIDATION STARTS-------------------------------------------------------
             val = [validators.RegexValidator(re.compile('^201[7-8]{1}[0-9A-Za-z]{4}[0-9]{4}[pP]$')),
-                   validators.RegexValidator(re.compile('^201[7]{1}[0-9A-Za-z]{6}[0-9]{4}[pP]$')),
-                   validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{4}[0-9]{3}[pP]$')),
-                   validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{6}[0-9]{3}[pP]$'))]
+                   validators.RegexValidator(re.compile('^201[4-6]{1}[0-9A-Za-z]{4}[0-9]{3}[pP]$')),]
             id1_flag = 1
             for validator in val :
                 try :
