@@ -30,7 +30,7 @@
 				<br>
 				<br>
 				<img src="{% static 'images/icon.png' %}" class = "icon">
-				 <input type = "text" name = "teamname" required>
+				 <input type = "text" name = "teamname" autocomplete="off" required>
 				<br>
 				<br>
 				
@@ -38,21 +38,21 @@
                 <br>
                 <br>
                 <img src="{% static 'images/icon.png' %}" class = "icon">
-				<input type = "text" name = "id1" required>
+				<input type = "text" name = "id1" autocomplete="off" required>
 				<br>
 				<br>
                 ID - 2
                 <br>
                 <br>
                 <img src="{% static 'images/icon.png' %}" class = "icon">
-				<input type = "text" name = "id2">
+				<input type = "text" name = "id2" autocomplete="off">
 				<br>
 				<br>
 				Password
 				<br>
 				<br>
 				<img src="{% static 'images/icon.png' %}"class = "icon">
-				<input type = "Password" name = "password" required>
+				<input type = "Password" name = "password" autocomplete="off" required>
 				<br>
                 <br>
                 
@@ -64,6 +64,7 @@
 		<img src="{% static 'images/castle1.jpg' %}" class="item castle">
 	</div>
 	<a href="{% url 'sign_in' %}">Login</a>
-
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="{% static 'js/alert_close.js' %}"></script>
 </body>
 </html>
