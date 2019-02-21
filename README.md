@@ -42,17 +42,15 @@ python manage.py migrate Base
 python3 manage.py loaddata populate.json
 ```
 
-### Create a superuser for Django Admin
-
-```bash
-python manage.py createsuperuser
-```
-
 ### Run the server
 
 ```bash
 python manage.py runserver 0.0.0.0:8000
 ```
+## Points to note
+
+- If you want to access the admin interface at http://localhost:8000/admin , use the username and password , both as "admin" (without quotes).
+- If you want to logout in the midway, you can do so by typing either "admin" or "#" ( both without quotes) in administrator password field. 
 
 ## Contribution
 
