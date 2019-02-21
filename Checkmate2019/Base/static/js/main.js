@@ -272,7 +272,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -321,7 +323,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -381,7 +385,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -591,7 +597,7 @@ function getScore(){
 window.setInterval(getCorrectQuestions, 3000)
 function getCorrectQuestions(){
     var data = $.ajax( {
-        type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
+        type: 'GET',     
         url: '/get_question_list',
         data: {},
         success: function(data) {
