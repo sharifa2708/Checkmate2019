@@ -503,7 +503,7 @@ window.addEventListener("keydown", moveUp);
 window.addEventListener("keydown", moveDown);
 window.addEventListener("keydown", handleKeyDown);
 window.addEventListener("keyup", handleKeyUp);
-
+window.addEventListener("keydown", closeqn);
 
 /*document.addEventListener('keydown', function abc(event) {
     if (event.keyCode == 73 ) {//just change the event listeneer to the conditions
@@ -620,7 +620,13 @@ function getCorrectQuestions(){
 }
 
 
-
+function closeqn(e){
+    if (e.keyCode == 27)
+    {
+        ques.className = 'hideBox ';
+        bgrd.className = 'hideBox ';
+    }
+}
 // function post(path, params, method) {
 //     method = method || "post"; // Set method to post by default if not specified.
 
