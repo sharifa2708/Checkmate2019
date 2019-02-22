@@ -61,7 +61,8 @@ table {
 	position: absolute;
 	left:10vw;
 	top: 10vh;
-	height: 40vh;
+	min-height: 40vh;
+	max-height: 80vh;
 	width: 80vw;
 	background-color: black;
 	border: 10px solid #99e6e6;
@@ -106,6 +107,7 @@ table {
 	/*flex-wrap: wrap;*/
 	overflow-wrap: normal;
 	margin: 0 1vw;
+	overflow-y: scroll;
 }
 p {
 	display: none;

@@ -18,8 +18,8 @@ negative_marking_factor = 5
 def index(request):
     if not request.user.is_authenticated:
         #The url endpoint below needs to be updated after the game is made.
-        return render(request, "Base/index.html", {})
-    return render(request, "Base/index.html", {})
+        return redirect('/instructions')
+    return redirect('/game')
 
 def get_question_list(request):
     current_team = Team.objects.get(user = request.user)
@@ -224,17 +224,6 @@ def check_existence(request, bitsid):
     else:
         pass
 
-@login_required
-def score(request):
-    if request.method=="POST":
-        score = request.POST['score']
-        user = Team.objects.get(user=request.user)
-        user.score += int(score)
-        user.save()
-        return redirect("/score") # needs to be updated after frontend is done
-    else:
-        #remove this part later....Currently its here only for a visual interface
-        return render(request, 'Base/score.html', {})
 
 #in case the user logs out of the system or the system crashes this functions comes into picture
 @login_required
@@ -250,3 +239,6 @@ def position(request):
         return redirect("/position")
     else :
         return render(request, 'Base/position.html', {})
+
+def instructions(request):
+    return render(request, 'Base/instructions.html')
