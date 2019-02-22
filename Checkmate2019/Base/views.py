@@ -91,6 +91,9 @@ def sign_up(request):
             user = authenticate(
                 username=team_name, password=password)
             login(request, user)
+            current_team = Team.objects.get(user=user)
+            current_team.logged_in = 1
+            current_team.save()
             return redirect('/game')
         else:
             form = Sign_up()
@@ -106,8 +109,11 @@ def sign_in(request):
             password = request.POST.get('password')
             user = authenticate(
                 username=team_name, password=password)
-            if user:
+            current_team = Team.objects.get(user=user)
+            if user and not current_team.logged_in:
                 login(request, user)
+                current_team.logged_in = 1
+                current_team.save()
                 messages.success(request, 'Successfully logged in .')
                 # Base/index written below needs to be updated after the game is completed.
                 return redirect('/game')
@@ -189,6 +195,9 @@ def sign_out(request):
     if request.method=='POST':
         password = request.POST.get('password')
         if password=="#" or password=="admin" : # Todo : replace # by a custom administrator password of choice 
+            current_user = Team.objects.get(user=request.user)
+            current_user.logged_in = 0
+            current_user.save()
             logout(request)
             messages.success(request, "You have been successfully logged out. We hope that you had a great time solving the puzzles. ")
             return redirect('/game')
