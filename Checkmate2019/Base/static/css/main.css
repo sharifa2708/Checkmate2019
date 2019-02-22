@@ -46,8 +46,19 @@ body {
     position: fixed;
     top:11%;
 }
+
+.links div{
+    padding: 3px;
+}
+
 a:link{
-    color:#000000 !important;
+    box-sizing: border-box;
+    color:#ffffff !important;
+     text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 a:hover{
     color: #CE6D18 !important;
@@ -94,6 +105,11 @@ a:hover{
   width: 100%;
 }
 .navbar-brand {
-  color: #44422A;
+  color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
   font-family: 'Press Start 2P','Kaushan Script', Arial, sans-serif, cursive;
 }
