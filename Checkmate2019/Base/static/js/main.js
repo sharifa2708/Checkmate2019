@@ -209,7 +209,7 @@ var jump_height = 15;     //percentage of 480
 var actualwidth = $('#mainsvg').width();
 var ratio = actualwidth/6720; //change to get width
 var defaultleft = 177*100/6720;
-var endingleft = (6720 - ((1720/ratio)))*100/6720;
+var endingleft = (1 - (0.83*window.innerWidth)/actualwidth)*100;
 var speed = (speed_rel*6720/100)*ratio;              //pixels
 var pixelx = 0;
 var direction = 1; // not used rn
@@ -272,7 +272,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -321,7 +323,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -381,7 +385,9 @@ function moveUp(e) {
                                 var text = JSON.stringify(data);
                                 // console.log(text);
                                 // console.log(data);
-                                questionpopup();
+                                if(rest_top[ii].element.style.display != 'none'){
+                                    questionpopup();
+                                }
                             }
                             break jump_start;
                         }
@@ -591,7 +597,7 @@ function getScore(){
 window.setInterval(getCorrectQuestions, 3000)
 function getCorrectQuestions(){
     var data = $.ajax( {
-        type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
+        type: 'GET',     
         url: '/get_question_list',
         data: {},
         success: function(data) {
