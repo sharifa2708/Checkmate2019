@@ -546,13 +546,13 @@ press_submit.addEventListener('click', function closepopup(event){
 cross.addEventListener('click', function bcd(event) {//close the pop-up
     ques.className = 'hideBox ';
     bgrd.className = 'hideBox ';
-    $('.answerTextField').val('');
 });
 
 function getQuestion(key){   
     document.getElementById('p1').innerHTML = "";
 
-    console.log($('.answerTextField').val())
+    // console.log($('.answerTextField').val())
+    $('.answerTextField').val('');
 
     var data = $.ajax( {
         type: 'POST',
@@ -561,10 +561,10 @@ function getQuestion(key){
             'questionKey': key
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             var obj = JSON.parse;
             var x = data.question_text;
-            console.log(x);
+            // console.log(x);
             document.getElementById('p1').innerHTML = x;
                      
         }
@@ -603,13 +603,13 @@ function getCorrectQuestions(){
         success: function(data) {
             var obj = JSON.parse;
             var x = data.correct_list;
-            console.log(x);
+            // console.log(x);
             for(var p = 0 ; p < x.length ; p ++){
                 var demo = x[p];
-                console.log(demo);
+                // console.log(demo);
 
             var questionBlock = $('[key=' +  demo + ']');
-            console.log(questionBlock);
+            // console.log(questionBlock);
             questionBlock.css('display', 'none');
             }
         }
