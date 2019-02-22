@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 import re
 from django.core import validators
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 current_question_key = 0
 negative_marking_factor = 5
@@ -251,3 +252,18 @@ def position(request):
 
 def instructions(request):
     return render(request, 'Base/instructions.html')
+
+def time(request):
+    FMT = "%H:%M:%S"
+    timeout = datetime(year=2019, month=2, day=23, hour=22, minute=0, second=0, microsecond=0)
+    time_now = datetime.now()
+    # time_now = str(time_now.hour) + ":" + str(time_now.minute) + ":" + str(time_now.second)
+    # time = datetime.strptime(timeout, FMT) - datetime.strptime(time_now, FMT)
+    timediff = timeout - time_now
+    timediff = str(timediff)
+    print(timediff)
+    timeleft = int(timediff[:2])*60 + int(timediff[3:5])
+    time = {
+        'time': timeleft
+    }
+    return JsonResponse(time)
