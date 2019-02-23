@@ -113,3 +113,7 @@ a:hover{
     1px 1px 0 #000;
   font-family: 'Press Start 2P','Kaushan Script', Arial, sans-serif, cursive;
 }
+
+.hidden{
+    display: none;
+}

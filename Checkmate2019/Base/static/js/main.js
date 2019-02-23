@@ -59,50 +59,8 @@ function getValueGroup(element, property) {
     }
 }
 
-// function getValuePipes(element, property) {
-//     if (property == 'height') {
-//         return parseFloat(element.getAttribute('height')) * 100 / 480;
-//     }
-//     if (property == 'width') {
-//         return parseFloat(element.getAttribute('width')) * 100 / 6720;
-//     }
-//     if (property == 'x') {
-//         return (getValue(document.getElementById('Pipes'), 'x', '%') + parseFloat(element.getAttribute('x'))) * 100 / 6720;
-//     }
-//     if (property == 'y') {
-//         return (480 - getValue(document.getElementById('Pipes'), 'y', 'vh') - parseFloat(element.getAttribute('y'))) * 100 / 480;
-//     }
-// }
-// function getValueGround(element,property){
-//     if (property == 'height') {
-//         return parseFloat(element.getAttribute('height')) * 100 / 480;
-//     }
-//     if (property == 'width') {
-//         return parseFloat(element.getAttribute('width')) * 100 / 6720;
-//     }
-//     if (property == 'x') {
-//         return parseFloat(element.getAttribute('x')) * 100 / 6720;
-//     }
-//     if (property == 'y') {
-//         return (480 - getValue(document.getElementById('Ground'), 'y', 'vh') - parseFloat(element.getAttribute('y'))) * 100 / 480;
-//     }
-// }
 var rest_left = [];
 var rest_top = [];
-
-// var ground_svg = document.getElementsByClassName("groundb");
-// for(var ii = 0; ii < ground_svg.length; ++ii){
-//     var temp = {
-//         "element": ground_svg[ii],
-//         "width": getValueGround(ground_svg[ii], 'width'),
-//         "height": getValueGround(ground_svg[ii], 'height'),
-//         "left": getValueGround(ground_svg[ii], 'x'),
-//         "top": getValueGround(ground_svg[ii], 'y'),
-//     };
-//     temp.right = temp.left + temp.width;
-//     temp.bottom = temp.top - temp.height;
-//     rest_left.push(temp);
-// }
 
 var blocks_svg = document.getElementsByClassName("blocks");
 for (var ii = 0; ii < blocks_svg.length; ++ii) {
@@ -130,20 +88,6 @@ for (var ii = 0; ii < groups_svg.length; ++ii) {
     temp.bottom = temp.top - temp.height;
     rest_left.push(temp);
 }
-// var pipes_svg = document.getElementsByClassName("pipes");
-// for (var ii = 0; ii < pipes_svg.length; ++ii) {
-//     var temp = {
-//         "element": pipes_svg[ii],
-//         "left": getValuePipes(pipes_svg[ii], 'x'),
-//         "top": getValuePipes(pipes_svg[ii], 'y'),
-//         "width": getValuePipes(pipes_svg[ii], 'width'),
-//         "height": getValuePipes(pipes_svg[ii], 'height')
-//     };
-//     temp.right = temp.left + temp.width;
-//     temp.bottom = temp.top - temp.height;
-//     rest_left.push(temp);
-// }
-
 rest_left.sort(function(a, b) {     // left to right then top to bottom
     if(a.left == b.left){return b.top - a.top;}
     return a.left - b.left;
@@ -217,14 +161,21 @@ var key_left = false;
 var key_right = false;
 var jumping = false;
 
-
+var marioright = document.getElementById("marioright");
+var marioleft = document.getElementById("marioleft");
 
 /***************************************************************/
 function handleKeyDown(event) {
-    if (event.keyCode == 37)
+    if (event.keyCode == 37){
         key_left = true;
-    else if (event.keyCode == 39)
+        marioleft.classList.remove("hidden");
+        marioright.classList.add("hidden");
+    }
+    else if (event.keyCode == 39){
         key_right = true;
+        marioleft.classList.add("hidden");
+        marioright.classList.remove("hidden");
+    }
     moveSide();
 }
 
