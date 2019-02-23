@@ -8118,7 +8118,7 @@
     <label>Answer<br>
 <form id="answerForm" method = 'POST', action = '/check_answer/'>
     {%csrf_token%}
-    <input class="answerTextField" type="text" name="answer" placeholder="Enter the Answer" id="textArea">
+    <input class="answerTextField" type="text" name="answer" placeholder="Enter the Answer" id="textArea" autocomplete = "off">
     
     </label>
 </div>
