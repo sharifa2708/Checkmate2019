@@ -499,6 +499,27 @@ cross.addEventListener('click', function bcd(event) {//close the pop-up
     bgrd.className = 'hideBox ';
 });
 
+$('#answerForm').submit(function(event) {
+    // console.log(  $('.answerTextField').val());
+    window.setTimeout(function() {
+    var scoreContainer = document.getElementById('score');
+    var currentScore = scoreContainer.innerHTML;
+    getScore();
+    window.setTimeout(() => {
+        var newScore = scoreContainer.innerHTML;
+        if( currentScore > newScore) {
+            alert('Answer is wrong');
+        }
+        else if( currentScore < newScore) {
+            alert("Congrats! You've answered correctly");
+        }
+    },200);
+    // console.log(newScore);
+    // console.log(currentScore);
+    getCorrectQuestions();
+    }, 3000);
+});
+
 function getQuestion(key){   
     document.getElementById('p1').innerHTML = "";
 
@@ -527,7 +548,7 @@ function getQuestion(key){
 
 //If the below time interval is made shorter, an error occurs - which affects the question text. DO NOT CHANGE THE TIME INTERVAL. I suggest calling the getScore function through an event listener instead.
 
-window.setInterval(getScore, 3000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
+// window.setInterval(getScore, 3000); //I'm updating score every 1000 milliseconds because I have no clue how event listeners work. Someone from front end please un-idiotify this code.
 function getScore(){
     var data = $.ajax( {
         type: 'GET',     //I had written POST here by mistake and it took me two fucking hours to figure out the bug javascript is evil I hate it.
@@ -552,19 +573,19 @@ var GlobalTime;
         success: function(data) {
             var obj = JSON.parse;
             GlobalTime = data.time;
-            console.log(GlobalTime);
+            // console.log(GlobalTime);
             document.getElementById('timeleft').innerHTML = GlobalTime + " min";     
         }
         
     });
 
 window.setInterval(function reducetime(){
-    console.log(GlobalTime);
+    // console.log(GlobalTime);
     GlobalTime = GlobalTime - 1;
     document.getElementById('timeleft').innerHTML = GlobalTime + " min";
 },60000);
 
-window.setInterval(getCorrectQuestions, 3000)
+// window.setInterval(getCorrectQuestions, 3000)
 function getCorrectQuestions(){
     var data = $.ajax( {
         type: 'GET',     
@@ -588,6 +609,9 @@ function getCorrectQuestions(){
     });
     return data;
 }
+
+getCorrectQuestions();
+getScore();
 
 
 function closeqn(e){
